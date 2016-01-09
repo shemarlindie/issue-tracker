@@ -263,21 +263,7 @@ md-sidenav:not(.md-locked-open) {
   }
 } 
 
-@media (max-width: 599px) { // XS
-  .content-padding {
-    padding-left: @content-padding-sm;
-    padding-right: @content-padding-sm;
-  }
-  // .content-padding-v {
-  //   padding-top: @content-padding-sm;
-  //   padding-bottom: @content-padding-sm;
-  // }
-  .content-padding-h {
-    padding-left: @content-padding-sm;
-    padding-right: @content-padding-sm;
-  }
-  
-  
+@media (max-width: 599px) { // XS  
   md-card.card-lg, md-card.card-md, md-card.card-sm {
     max-width: auto;
     min-width: auto;
@@ -290,6 +276,10 @@ md-sidenav:not(.md-locked-open) {
   
   .md-subheader h2 {
     font-size: 1.5em;
+  }
+  
+  .no-padding-xs {
+    padding: 0 !important;
   }
 }
 

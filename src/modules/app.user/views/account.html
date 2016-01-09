@@ -2,5 +2,5 @@
   <md-sidenav class="md-sidenav-left md-whiteframe-1dp" md-component-id="sidenav-main" md-is-locked-open="$mdMedia('gt-sm')">
     <md-sidenav-menu sections="vm.sidenav.sections" on-select="vm.onSectionSelected" selected-section="vm.sidenav.selectedSection"></md-sidenav-menu>
   </md-sidenav>
-  <div class="content-padding animate-fade" ng-include="vm.sidenav.selectedSection.url" flex></div>
+  <div class="p-md no-padding-xs animate-fade" ng-include="vm.sidenav.selectedSection.url" flex></div>
 </div>
