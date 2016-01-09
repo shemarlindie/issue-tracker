@@ -1,0 +1,123 @@
+<div ng-controller="IssueCtrl as vm">
+  <md-subheader class="inherit-line-height p-sm b-b">
+    <div>
+      <b class="text-uppercase">        
+        <span ng-bind="vm.issue.status | IssueStatus">></span>
+        <span class="middot">&middot;</span>
+        <span ng-bind="vm.issue.type | IssueType"></span>
+        <span class="middot">&middot;</span>
+        <span ng-bind="(vm.issue.priority | IssuePriority) + ' Priority'"></span>
+      </b>
+    </div>
+
+    <div layout="row" layout-align="start center" layout-wrap>
+      <h2 class="no-margin">{{vm.issue.name}}</h2>
+      <md-button class="button-link" ui-sref="app.issue-edit({id:vm.issue.$id})">Edit</md-button>
+      <md-button href class="button-link" ng-click="vm.deleteIssue(vm.issue)">Delete</md-button>
+      <span flex></span>
+    </div>
+
+    <div>
+      Reported by <span ng-bind="vm.issue.reported_by.first_name + ' ' + vm.issue.reported_by.last_name"></span> in <i><a ui-sref="app.project-detail({id:vm.issue.project.$id})" ng-bind="vm.issue.project.name"></a></i>      on
+      <span ng-bind="vm.issue.date_created | date:'MMM d, y h:mm a'"></span>
+      <br />
+      <br /> Updated <span am-time-ago="vm.issue.date_updated"></span>
+    </div>
+  </md-subheader>
+
+  <md-content class="b-t b-b m-v">
+    <div class="p-lg">
+
+      <div marked="vm.issue.description"></div>
+      <div class="p-v">
+        <div class="m-t" layout="row" layout-wrap>
+          <div class="m-r-lg">
+            <h5 class="text-uppercase text-muted no-margin">Assigned to</h5>
+            <div layout="column">
+              <div class="p-v" ng-repeat="user in vm.issue.assigned_to">
+                <h4 class="no-margin" ng-bind="user.first_name + ' ' + user.last_name"></h4>
+                <span class="text-sm text-muted"><i ng-bind="user.email"></i></span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h5 class="text-uppercase text-muted no-margin">Testers</h5>
+            <div layout="column">
+              <div class="p-v" ng-repeat="user in vm.issue.testers">
+                <h4 class="no-margin" ng-bind="user.first_name + ' ' + user.last_name"></h4>
+                <span class="text-sm text-muted"><i ng-bind="user.email"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="m-t" ng-if="vm.issue.tags && vm.issue.tags.length">
+          <h5 class="text-uppercase text-muted no-margin">Tagged</h5>
+          <div class="p-v-xs"></div>
+          <md-chips readonly="true" class="no-shadow" ng-model="vm.issue.tags">
+            <md-chip-template>
+              <b ng-bind="$chip.name"></b>
+            </md-chip-template>
+          </md-chips>
+        </div>
+      </div>
+    </div>
+
+
+    <md-divider></md-divider>
+
+    <div class="p-lg">
+      <h3>Change Status</h3>
+      <form class="m-t-lg" ng-submit="vm.statusCommentForm.$valid && vm.updateStatus()" name="vm.statusCommentForm">
+        <div layout="column">
+          <md-input-container class="no-m" style="max-width: 200px;">
+            <label>Status</label>
+            <md-select ng-required="true" name="status" ng-model="vm.statusComment.status" md-on-open="vm.statusList.$loaded()">
+              <md-option ng-repeat="s in vm.statusList" ng-value="$index">{{s.$value}}</md-option>
+            </md-select>
+          </md-input-container>
+          <div layout="row" layout-align="start start" layout-xs="column" layout-align-xs="">
+            <md-input-container class="m-sm" flex-sm flex-gt-sm="50">
+              <label>Explain why you changed the status.</label>
+              <textarea cols="1" rows="5" ng-model="vm.statusComment.body"></textarea>
+            </md-input-container>
+            <md-button type="submit" class="md-raised md-primary">Update Status</md-button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+    <md-divider></md-divider>
+
+    <div class="p-lg">
+      <h3>Comments</h3>
+      <form class="" ng-submit="vm.userCommentForm.$valid && vm.addComment()" name="vm.userCommentForm">
+        <div layout="column">
+          <div layout="row" layout-align="start start" layout-xs="column" layout-align-xs="">
+            <md-input-container class="m-sm" flex-sm flex-gt-sm="50">
+              <label>Add a comment</label>
+              <textarea cols="1" rows="5" ng-model="vm.userComment.body" required></textarea>
+            </md-input-container>
+            <md-button type="submit" class="md-raised md-primary">Comment</md-button>
+          </div>
+        </div>
+      </form>
+      
+      <div ng-if="vm.issue.comments && vm.issue.comments.length">
+        <div class="p-v b-t" ng-repeat="comment in vm.issue.comments | orderBy:'-date_added' | limitTo:10 track by comment.date_added">
+          <div class="m-t-n" ng-if="comment.body" marked="comment.body"></div>
+          <h4 ng-if="comment.status" class="no-margin">Status changed to {{comment.status | IssueStatus}}</h4>
+          <div class="text-muted text-sm m-t-xs">
+            <span>{{ comment.user.first_name + ' ' + comment.user.last_name }}</span><span class="middot">&middot;</span><span am-time-ago="comment.date_added"></span>
+          </div>
+        </div>        
+      </div>
+    </div>
+</div>
+<!--<pre>{{vm.issue | json}}</pre>-->
+</md-content>
+
+
+</div>

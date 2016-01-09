@@ -1,0 +1,28 @@
+{
+  "name": "V75 Issue Tracker",
+  "version": "1.0.0",
+  "description": "Project management and issue tracking.",
+  "main": "",
+  "dependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.10.0",
+    "del": "^2.2.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-less": "^3.0.5",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:shemarcl/v75-issue-tracker.git"
+  },
+  "author": "",
+  "license": "",
+  "homepage": "https://bitbucket.org/shemarcl/v75-issue-tracker#readme"
+}

@@ -1,0 +1,291 @@
+@import 'util.less';
+
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+hr {
+  border-width: 0;
+  height: 1px;
+  background-color: #ddd;
+  margin: 15px 0;
+}
+
+md-content {
+  color: #555;
+}
+
+.md-subheader h2 {
+  font-size: 2em;
+}
+
+.inherit-line-height {
+  line-height: inherit !important;
+}
+
+a, a:visited, a:hover {
+  color: @brand-primary;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.middot {
+  font-weight: bold;
+  padding-left: @p-sm;
+  padding-right: @p-sm;
+}
+
+#app-view {
+  position: relative;
+  min-height: 100%;
+  padding-top: @toolbar-height;
+  padding-bottom: @footer-height;  
+}
+
+#preloader {
+  animation-duration: 1s;
+  animation-timing-function: linear;
+}
+
+.toolbar-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 61;
+}
+
+.footer-fixed {
+  .text-muted;
+  background-color: rgb(250, 250, 250);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: @footer-height;
+  z-index: 61;
+}
+
+.app-header-title {
+  font-size: 150%;
+  font-weight: lighter;
+}
+
+.app-header-title .icon {
+  font-size: 150%;
+}
+
+.app-header-title .v75 {
+  font-size: 120%;
+}
+
+.app-header-title .spacy {
+  letter-spacing: 5px;
+}
+
+#logo-icon {
+  animation-delay: 2s;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+.issue-list-wrapper md-list {
+  padding: 0;
+}
+
+.issue-list-wrapper a.md-button {
+  margin: 0;
+  line-height: 140%;
+}
+
+
+.filter-list md-select-value {
+  min-width: 100px;
+}
+.filter-list md-input-container {
+  padding-right: @p-sm;
+}
+
+
+md-chips.no-shadow md-chips-wrap {
+  box-shadow: inherit;
+}
+
+md-card.card-lg, md-card.card-md, md-card.card-sm {
+  
+}
+
+md-card.card-sm {
+  max-width: 300px;
+  min-width: 300px;
+  width: 300px;
+}
+md-card.card-md {
+  max-width: 500px;
+  min-width: 500px;
+  width: 500px;
+}
+md-card.card-lg {
+  max-width: 650px;
+  min-width: 650px;
+  width: 650px;
+}
+
+.auth-card-wrapper {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.auth-card-wrapper-sm {
+  max-width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+md-toolbar, footer {
+  animation-duration: 1s;
+  animation-delay: 1s;
+}
+
+.animate-fade.ng-enter {
+  position: relative;
+  animation: fadeIn 1s;
+}
+
+// md-input-container textarea {
+//   transition: height ease 0.3s;
+// }
+
+md-input-container.no-m {
+  margin: 0;
+  margin-top: @m-sm;
+}
+
+md-input-container.m-sm {
+  margin: @m-sm 0;
+  margin-top: @m-md;
+}
+
+.md-button.button-link {
+  min-width: auto !important;
+}
+
+
+
+/*----------
+  Account
+-----------*/
+md-sidenav {
+  min-width: 250px;
+  max-width: 250px;
+  width: 250px;
+}
+
+md-sidenav.proj-list {
+  overflow-y: auto;
+}
+
+md-sidenav:not(.md-locked-open) {
+  padding-top: @toolbar-height;
+  // animation-duration: .5s;
+  // animation-delay: 1s;
+}
+
+.md-sidenav-menu .menu-heading {
+  color: @brand-primary;
+}
+
+.md-sidenav-menu .md-button.active, .md-sidenav-menu .md-button:hover, .md-sidenav-menu .md-button:focus {
+  color: white;
+  background: @brand-primary;
+}
+
+
+
+@media (min-width: 1920px) { // GT-LG
+
+} 
+
+@media (max-width: 1919px) { // LG
+
+} 
+
+@media (max-width: 1279px) { // MD
+
+} 
+
+@media only screen and (max-width: 959px) and (min-width: 0) and (orientation: portrait) { // MD - portrait
+  md-sidenav:not(.md-locked-open) {
+    padding-top: @toolbar-height-md-pt;
+  }
+  
+  #app-view {
+    padding-top: @toolbar-height-md-pt;
+  }
+} 
+
+@media only screen and (max-width: 959px) and (min-width: 0) and (orientation: landscape) { // MD - landscape
+  md-sidenav:not(.md-locked-open) {
+    padding-top: @toolbar-height-md-ls;
+  }
+  
+  #app-view {
+    padding-top: @toolbar-height-md-ls;
+  }
+}
+
+@media (max-width: 959px) { // SM
+  md-card.card-lg, md-card.card-md, md-card.card-sm {
+    max-width: auto;
+    min-width: auto;
+    width: 97%;
+  }
+} 
+
+@media (max-width: 599px) { // XS
+  .content-padding {
+    padding-left: @content-padding-sm;
+    padding-right: @content-padding-sm;
+  }
+  // .content-padding-v {
+  //   padding-top: @content-padding-sm;
+  //   padding-bottom: @content-padding-sm;
+  // }
+  .content-padding-h {
+    padding-left: @content-padding-sm;
+    padding-right: @content-padding-sm;
+  }
+  
+  
+  md-card.card-lg, md-card.card-md, md-card.card-sm {
+    max-width: auto;
+    min-width: auto;
+    width: 97%;
+  }
+  
+  .filter-list md-select-value {
+    min-width: 80px;
+  }
+  
+  .md-subheader h2 {
+    font-size: 1.5em;
+  }
+}
+

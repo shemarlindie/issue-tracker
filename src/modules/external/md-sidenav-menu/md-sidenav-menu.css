@@ -1,0 +1,162 @@
+/**
+ * md-sidenav-menu
+ * by Shemar Lindie
+ * 
+ * Version: 0.0.1
+ * 
+ * A list of collapsable, non-collapsable and headered menu links for use with md-sidenav.
+ * 
+ * Adapted from the side navigation menu on the angular-material docs site.
+ * Credit goes to the people working on that:
+ * https://github.com/angular/material 
+ * 
+ */
+
+/************
+ * UTIL
+ ************/
+.no-transition {
+  -webkit-transition: none !important;
+  -moz-transition:    none !important;
+  -ms-transition:     none !important;
+  -o-transition:      none !important;
+  transition:         none !important;
+}
+
+
+/************
+ * DOCS MENU
+ ************/
+.md-sidenav-menu,
+.md-sidenav-menu ul {
+  list-style: none;
+  padding: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+.md-sidenav-menu li {
+  margin: 0;
+}
+.md-sidenav-menu > li:nth-child(1) {
+  border-top: none;
+}
+.md-whiteframe-glow-z1 {
+  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.14),
+              0px 0px 2px 2px rgba(0, 0, 0, 0.098),
+              0px 0px 5px 1px rgba(0, 0, 0, 0.084);
+}
+.md-sidenav-menu > li {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.md-sidenav-menu .md-button {
+  border-radius: 0;
+  cursor: pointer;
+  display: block;
+  align-items: inherit;
+  line-height: 40px;
+  margin: 0;
+  max-height: 40px;
+  overflow: hidden;
+  padding: 0px 16px;
+  text-align: left;
+  text-decoration: none;
+  text-transform: none;
+  white-space: normal;
+  width: 100%;
+}
+.md-sidenav-menu .md-button:hover,
+.md-sidenav-menu .md-button:focus {
+  background: rgba(255, 255, 255, 0.12);
+}
+.md-sidenav-menu .md-button md-icon {
+  color: white;
+}
+
+.md-sidenav-menu md-select {
+
+ /* Override md-select margins.  With margins the menu will look incorrect and causes mobile list
+    to not be scrollable.
+  */
+  margin: 0;
+  width: 100%;
+}
+
+.md-sidenav-menu md-select md-select-label {
+  justify-content: flex-end;
+  padding-top: 10px;
+}
+
+.md-sidenav-menu md-select md-select-label span {
+  margin-right: auto;
+  padding-left: 13px;
+}
+
+.md-sidenav-menu md-select .md-select-icon {
+  margin-right: 28px;
+}
+
+.md-sidenav-menu button.md-button::-moz-focus-inner {
+  padding: 0;
+}
+.md-sidenav-menu .md-button.active {
+  background: rgba(255, 255, 255, 0.12);
+}
+.md-sidenav-menu .menu-heading {
+  font-size: 12px;
+  font-weight: bold;
+  display: block;
+  line-height: 32px;
+  margin: 0;
+  padding: 8px 16px 0;
+  text-align: left;
+  width: 100%;
+  color: rgba(255, 255, 255, 0.54);
+  text-transform: uppercase;
+}
+.menu-toggle-list {
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  -webkit-transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
+  -webkit-transition-property: height;
+  -moz-transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
+  -moz-transition-property: height;
+  transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
+  transition-property: height;
+}
+.md-sidenav-menu .menu-toggle-list a.md-button, .menu-toggle-list button.md-button {
+  display: block;
+  padding: 0 16px 0 32px;
+  text-transform: none;
+  text-rendering: optimizeLegibility;
+  font-weight: 500;
+}
+
+ul#md-sidenav-menu-Directives {
+  margin-bottom: 20px;
+}
+.md-button-toggle .md-toggle-icon {
+  display: block;
+  margin-left: auto;
+  speak: none;
+  vertical-align: middle;
+  transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transition: transform 0.3s ease-in-out;
+  -webkit-transition: -webkit-transform 0.3s ease-in-out;
+}
+.md-button-toggle .md-toggle-icon.toggled {
+  transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+}
+
+menu-toggle > * {
+  transition: background-color .3s;
+}
+
+menu-toggle > *.active {
+  background-color: rgba(0, 0, 0, 0.084);
+}
+
+/* End Docs Menu */

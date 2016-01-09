@@ -1,0 +1,15 @@
+<md-list>
+  <md-list-item ui-sref="app.issue-detail({id:issue.$id})" class="secondary-button-padding" ng-repeat="issue in vm.issues | filter:vm.filterFn | orderBy:vm.filters.sort_by:vm.filters.sort_order track by issue.$id">
+    <div class="m-v" layout="row" layout-align="start center" layout-align-xs="" layout-xs="column" flex>
+      <div class="md-list-item-text">
+        <b class="text-uppercase text-sm text-muted">{{issue.type | IssueType}}</b>
+        <h3 class="no-margin">{{issue.name}}</h3>
+        <div class="text-sm">Assigned to: {{issue.assigned_to | UserList:', '}} | Testers: {{issue.testers | UserList:', '}}</div>
+        <div class="text-sm">{{issue.priority | IssuePriority}} Priority</div>
+      </div>
+      <span flex></span>
+      <div class="m-l p-v-sm text-uppercase">{{issue.status | IssueStatus}}</div>
+    </div>
+    <md-divider></md-divider>
+  </md-list-item>
+</md-list>

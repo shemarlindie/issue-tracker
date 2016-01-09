@@ -1,0 +1,10 @@
+<div layout="row" flex>
+  <md-sidenav class="proj-list md-sidenav-left md-whiteframe-1dp" md-component-id="sidenav-main" md-is-locked-open="$mdMedia('gt-sm')">
+    <div class="text-center m-t-lg">
+      <md-button ng-click="vm.toggleSidenav()" ui-sref="app.project-create" class="md-raised md-primary"><md-icon>library_add</md-icon> Project</md-button>
+      <md-button ng-click="vm.toggleSidenav()" ui-sref="app.issue-create" class="md-raised md-primary"><md-icon>add</md-icon> Issue</md-button>
+    </div>
+    <md-sidenav-menu sections="vm.sidenav.sections" on-select="vm.onSectionSelected"></md-sidenav-menu>
+  </md-sidenav>
+  <div class="animate-fade" layout="column" flex ui-view="page"></div>
+</div>

@@ -1,0 +1,73 @@
+<div ng-controller="IssueFeedCtrl as vm">
+  <md-subheader>
+    <div layout="row" layout-align="start center" layout-wrap>
+      <h2>Issue Feed</h2>
+      <span flex></span>
+      <div>
+        <md-button ui-sref="app.issue-create" class="md-raised md-primary">
+          <md-icon>add</md-icon> Issue</md-button>
+      </div>
+    </div>
+    <div layout="row" layout-xs="column" layout-wrap>
+      <h4 class="m-r-lg">Filters:</h4>
+      <span class="filter-list" layout="row" layout-align="start center" layout-align-xs="center center" layout-wrap flex>
+        <md-input-container class="m-sm">
+          <label>Project</label>
+          <md-select ng-model="vm.filters.project" md-on-open="vm.projects.$loaded()">
+            <md-option ng-value="false">All Projects</md-option>
+            <md-option ng-repeat="proj in vm.projects" ng-value="proj.$id">{{proj.name}}</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container class="m-sm">
+          <label>Assigned to</label>
+          <md-select ng-model="vm.filters.assigned_to" md-on-open="vm.users.$loaded()">
+            <md-option ng-value="false">Anyone</md-option>
+            <md-option ng-repeat="u in vm.users" ng-value="u.uid">{{ u.uid != vm.me ? u.first_name + ' ' + u.last_name : 'Me' }}</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container class="m-sm">
+          <label>Type</label>
+          <md-select ng-model="vm.filters.type" md-on-open="vm.typeList.$loaded()">
+            <md-option ng-value="-1">Any</md-option>
+            <md-option ng-repeat="type in vm.typeList" ng-value="$index">{{type.$value}}</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container class="m-sm">
+          <label>Status</label>
+          <md-select ng-model="vm.filters.status" md-on-open="vm.statusList.$loaded()">
+            <md-option ng-value="-1">Any</md-option>
+            <md-option ng-repeat="status in vm.statusList" ng-value="$index">{{status.$value}}</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container class="m-sm">
+          <label>Priority</label>
+          <md-select ng-model="vm.filters.priority" md-on-open="vm.priorityList.$loaded()">
+            <md-option ng-value="-1">Any</md-option>
+            <md-option ng-repeat="priority in vm.priorityList" ng-value="$index">{{priority.$value}}</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container class="m-sm">
+          <label>Sort by</label>
+          <md-select ng-model="vm.filters.sort_by">
+            <md-option ng-value="'date_updated'">Updated</md-option>
+            <md-option ng-value="'priority'">Priority</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container class="m-sm">
+          <label>Sort Order</label>
+          <md-select ng-model="vm.filters.sort_order">
+            <md-option ng-value="false">ASC</md-option>
+            <md-option ng-value="true">DESC</md-option>
+          </md-select>
+        </md-input-container>
+      </span>
+    </div>
+  </md-subheader>
+  <md-divider></md-divider>
+
+  <md-content class="issue-list-wrapper m-v">
+    <md-divider></md-divider>
+    <ng-include src="'modules/app.issue/views/issue-list.tpl.html'"></ng-include>
+  </md-content>
+
+</div>

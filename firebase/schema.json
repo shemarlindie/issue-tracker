@@ -1,0 +1,79 @@
+{
+  "users": [
+    {
+      "uid": "",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "date_joined": 0,
+      "date_last_logged_in": 0,
+      "date_last_active": 0
+    }
+  ],
+  "projects": [
+    {
+      "name": "",
+      "description": "",
+      "date_due": 0,
+      "tags": [],
+      "owner": "uid",
+      "collaborators": [
+        "uid"
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "project": "pid",
+      "name": "",
+      "description": "",
+      "tags": [],
+      "status": "",
+      "priority": "low|medium|high|critical",
+      "type": "bug|enhancement|proposal|task",
+      "reported_by": "uid",
+      "testers": [
+        "uid"
+      ],
+      "assigned_to": [
+        "uid"
+      ],
+      "date_due": 0,
+      "date_created": 0,
+      "date_updated": 0,
+      "attachments": [
+        {
+          "name": "",
+          "type": "file|image",
+          "data": ""
+        }
+      ],
+      "comments": [
+        {
+          "status": 0,
+          "body": "",
+          "date_added": 0,
+          "date_updated": 0,
+          "user": "uid"
+        }
+      ]
+    }
+  ],
+  "status": {
+    "0": "Open",
+    "1": "In Progress",
+    "2": "Invalid",
+    "3": "Not Reproducible",
+    "4": "Missing Information",
+    "5": "Ready for Next Release",
+    "6": "Ready for Retest",
+    "7": "On Hold",
+    "8": "Won't Fix",
+    "10": "Resolved",
+    "99": "Closed"
+  },
+  "tags": {
+    "project": [],
+    "issue": []
+  }
+}
