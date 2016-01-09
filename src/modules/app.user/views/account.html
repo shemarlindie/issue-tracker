@@ -1,6 +1,7 @@
 <div layout="row" ng-controller="UserCtrl as vm" flex>
-  <md-sidenav class="md-sidenav-left md-whiteframe-1dp" md-component-id="sidenav-main" md-is-locked-open="$mdMedia('gt-sm')">
+  <md-sidenav layout="column" layout-align="space-between" class="md-sidenav-left md-whiteframe-1dp" md-component-id="sidenav-main" md-is-locked-open="$mdMedia('gt-sm')">
     <md-sidenav-menu sections="vm.sidenav.sections" on-select="vm.onSectionSelected" selected-section="vm.sidenav.selectedSection"></md-sidenav-menu>
+    <ng-include src="'modules/app/views/footer.html'"></ng-include>
   </md-sidenav>
-  <div class="p-md no-padding-xs animate-fade" ng-include="vm.sidenav.selectedSection.url" flex></div>
+  <md-content class="md-hue-1 p-md no-padding-xs animate-fade" ng-include="vm.sidenav.selectedSection.url" flex></md-content>
 </div>

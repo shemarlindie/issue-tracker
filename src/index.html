@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
-<body>
+<body layout="column">
   <!-- PRELOADER -->
   <div id="preloader">
     <style>
@@ -130,52 +130,46 @@
   <script src="modules/app/app.config.router.js"></script>
   <!-- / APP SCRIPTS -->
 
-  
-  <md-toolbar class="md-hue-2 md-whiteframe-1dp toolbar-fixed animated fadeInDown">
-    <div class="md-toolbar-tools" layout="row">
-      <md-button ng-if="vm.hasSidenav() && vm.showSidenavToggle()" ng-click="vm.toggleSidenav()" class="md-icon-button"><md-icon>menu</md-icon></md-button>
-      <md-button ui-sref="app.issues" class="no-margin">
-        <md-icon class="spin-icon">donut_small</md-icon>
-        V75 <span hide-xs>Issue</span> Tracker
-      </md-button>
-      <span flex></span>
-      <md-button ng-if="!vm.user" ui-sref="login">Login</md-button>
-      
-      <md-menu ng-if="vm.user" md-offset="0 45" md-position-mode="target-right target" title="{{vm.user.email}}">
-        
-        <md-button class="no-margin button-link" ng-click="$mdOpenMenu($event)">
-          <span>
-            <span class="text-lowercase" hide-xs>{{vm.user.email}}</span>&nbsp;
-            <span class="text-uppercase" show-xs hide-gt-xs><strong>{{vm.user.first_name.charAt(0) + vm.user.last_name.charAt(0)}}</strong></span>
-            <md-icon class="material-icons">person</md-icon>
-          </span>
+  <md-content class="md-hue-1" layout="column" flex>    
+    <md-toolbar id="app-toolbar" class="md-hue-2 md-whiteframe-1dp animated fadeInDown">
+      <div class="md-toolbar-tools" layout="row">
+        <md-button ng-if="vm.hasSidenav() && vm.showSidenavToggle()" ng-click="vm.toggleSidenav()" class="md-icon-button"><md-icon>menu</md-icon></md-button>
+        <md-button ui-sref="app.issues" class="no-margin">
+          <md-icon class="spin-icon">donut_small</md-icon>
+          V75 <span hide-xs>Issue</span> Tracker
         </md-button>
+        <span flex></span>
+        <md-button ng-if="!vm.user" ui-sref="login">Login</md-button>
         
-        <md-menu-content width="4">
-          <span class="text-center m-t-xs" hide-gt-xs>
-            <span class="text-sm text-ellipsis">{{vm.user.email}}</span>&nbsp;
-            <md-divider class="m-t-sm"></md-divider>
-          </span>
-          <md-menu-item>
-            <md-button ui-sref="account">
-              <md-icon class="md-primary">person</md-icon>
-              <span>Account</span>
-            </md-button>
-          </md-menu-item>
-          <md-button class="md-raised md-warn md-hue-2" ng-click="vm.logout()" ng-disabled="loggingOut">Logout</md-button>
-        </md-menu-content>
-        
-      </md-menu>
-    </div>
-  </md-toolbar>
-
-  <md-content id="app-view" class="md-hue-1" layout="column">
-    <div class="animate-fade" layout="column" ui-view flex></div>
-    <footer class="footer-fixed md-whiteframe-1dp animated fadeIn" layout="row" layout-align="center center">
-      <div class="text-center">
-        <b>V75 Issue Tracker</b>&nbsp; by <a href="http://version75.com" target="_blank">V75 Apps</a> - &copy; 2016
+        <md-menu ng-if="vm.user" md-offset="0 45" md-position-mode="target-right target" title="{{vm.user.email}}">
+          
+          <md-button class="no-margin button-link" ng-click="$mdOpenMenu($event)">
+            <span>
+              <span class="text-lowercase" hide-xs>{{vm.user.email}}</span>&nbsp;
+              <span class="text-uppercase" show-xs hide-gt-xs><strong>{{vm.user.first_name.charAt(0) + vm.user.last_name.charAt(0)}}</strong></span>
+              <md-icon class="material-icons">person</md-icon>
+            </span>
+          </md-button>
+          
+          <md-menu-content width="4">
+            <span class="text-center m-t-xs" hide-gt-xs>
+              <span class="text-sm text-ellipsis">{{vm.user.email}}</span>&nbsp;
+              <md-divider class="m-t-sm"></md-divider>
+            </span>
+            <md-menu-item>
+              <md-button ui-sref="account">
+                <md-icon class="md-primary">person</md-icon>
+                <span>Account</span>
+              </md-button>
+            </md-menu-item>
+            <md-button class="md-raised md-warn md-hue-2" ng-click="vm.logout()" ng-disabled="loggingOut">Logout</md-button>
+          </md-menu-content>
+          
+        </md-menu>
       </div>
-    </footer>
+    </md-toolbar>
+
+    <md-content class="animate-fade md-hue-1" layout="column" ui-view flex></md-content>
   </md-content>
 </body>
 

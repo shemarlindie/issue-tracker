@@ -1,5 +1,5 @@
 <div ng-controller="IssueFeedCtrl as vm">
-  <md-subheader class="inherit-line-height">
+  <md-subheader class="inherit-line-height b-b md-no-sticky">
     <div ng-controller="ProjectCtrl as vm">
       <div layout="row" layout-align="start center" layout-wrap>
         <h2 ng-bind="vm.project.name"></h2>
@@ -63,10 +63,8 @@
       </span>
     </div>
   </md-subheader>
-  <md-divider></md-divider>
 
   <md-content class="issue-list-wrapper m-v">
-    <md-divider></md-divider>
     <ng-include src="'modules/app.issue/views/issue-list.tpl.html'"></ng-include>
   </md-content>
 
