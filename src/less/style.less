@@ -60,6 +60,10 @@ a:hover {
   animation-timing-function: linear;
 }
 
+.spin-icon {
+  animation: rotate 5s 2s linear infinite; 
+}
+
 .toolbar-fixed {
   position: fixed;
   top: 0;
@@ -289,3 +293,9 @@ md-sidenav:not(.md-locked-open) {
   }
 }
 
+
+
+@keyframes rotate {
+  from  { transform: rotate(0deg); }
+  to    { transform: rotate(360deg); }
+}
