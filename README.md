@@ -2,6 +2,8 @@
 ### Project management and issue tracking. ###
 #### by V75 Apps ####
 
+http://dev.version75.com/issue-tracker
+
 #### RECOMMENDATIONS: ####
 * Install Node
 * Install bower globally: npm install -g bower
