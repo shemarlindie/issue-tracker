@@ -2,7 +2,7 @@
 ### Project management and issue tracking. ###
 #### by V75 Apps ####
 
-http://dev.version75.com/issue-tracker/#/
+[View live app](http://dev.version75.com/issue-tracker/#/issues)
 
 #### RECOMMENDATIONS: ####
 * Install Node
