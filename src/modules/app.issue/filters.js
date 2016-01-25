@@ -6,7 +6,7 @@
   angular.module('app.issue')
     .filter('IssueStatus', ['ConstantService', function (ConstantService) {
       return function (code) {
-        return ConstantService.constants.status[code]? ConstantService.constants.status[code].$value : '';
+        return ConstantService.constants.status[code] ? ConstantService.constants.status[code].$value : '';
       }
     }])
     .filter('IssueType', ['ConstantService', function (ConstantService) {
@@ -20,8 +20,7 @@
       }
     }])
     .filter('UserList', ['User', function (User) {
-      var loading = false;
-      var users = undefined;
+      var cache = {};
       var formatter = function (users, separator) {
         return users.map(function (val) {
           return val.first_name + ' ' + val.last_name;
@@ -29,25 +28,24 @@
       }
 
       return function (uids, separator) {
-        if (!uids) return '';
-        
-        if (!users) {
-          if (!loading) {
-            loading = true;
-            User.uidToObj(uids).then(function (result) {
-              if (result && result.length) {
-                users = result;
-              }
-              else {
-                users = [];
-              }
-            });
-          }
-          
+        if (!uids) return '-';
+
+        var key = uids.join();
+
+        if (!cache[key]) {
+          User.uidToObj(uids).then(function (result) {
+            if (result && result.length) {
+              cache[key] = result;
+            }
+            else {
+              cache[key] = [];
+            }
+          });
+
           return '...';
         }
         else {
-          return formatter(users);
+          return formatter(cache[key]);
         }
       }
     }]);
