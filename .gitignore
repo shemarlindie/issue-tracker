@@ -161,3 +161,4 @@ fabric.properties
 # Distribution
 /dist
 /build
+sourcemaps
