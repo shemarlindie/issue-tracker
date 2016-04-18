@@ -1,0 +1,53 @@
+<div ng-controller="ProjectListCtrl as vm">
+  <md-subheader class="inherit-line-height b-b md-no-sticky">
+    <!--<h2>Projects</h2>-->
+    <p><b>Select a project to manage issues.</b></p>
+  </md-subheader>
+  <md-content>
+    <md-table-pagination class="b-b" md-limit="vm.query.pageSize" md-limit-options="[1, 5, 10, 15]" md-page="vm.query.page"
+                         md-total="{{vm.query.total}}"
+                         md-on-paginate="vm.onPaginate"
+                         md-page-select>
+    </md-table-pagination>
+  </md-content>
+
+  <div layout="column" layout-align="center center">
+    <div ng-if="!vm.projects.page">
+      <md-progress-circular md-mode="indeterminate" md-diameter="50"></md-progress-circular>
+    </div>
+    <div class="text-muted p" ng-if="vm.projects.page && vm.projects.list.length == 0">No projects.</div>
+  </div>
+
+  <div ng-if="vm.projects.list.length" layout="row" layout-align="center start" layout-margin layout-wrap>
+    <md-card ng-repeat="proj in vm.projects.list track by proj.id" flex-xs="100" flex-sm="45" flex="30" flex-lg="25" flex-gt-lg="20">
+      <a ui-sref="app.project-detail({id:proj.id})">
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <span ng-bind="proj.name"></span>
+          <span flex></span>
+          <md-icon>open_in_new</md-icon>
+        </div>
+      </md-toolbar>
+      </a>
+      <md-card-content>
+        <div ng-if="proj.description">
+          <div class="text-sm" ng-bind="proj.description"></div>
+          <md-divider class="m-v"></md-divider>
+        </div>
+        <div class="m-b" ng-if="proj.client">
+          <h5 class="no-margin">Client</h5>
+          <span class="text-sm">{{proj.client}}</span>
+        </div>
+        <div ng-if="proj.collaborators.length">
+          <h5 class="no-margin">Collaborators</h5>
+          <span class="text-sm">{{proj.collaborators | UserList:', '}}</span>
+        </div>
+      </md-card-content>
+      <md-card-footer layout="row" layout-align="end end">
+        <span ng-if="proj.date_due" class="text-sm text-muted">Due {{proj.date_due | date:'mediumDate'}}</span>
+        <span flex=""></span>
+        <span class="text-sm text-muted">{{proj.issue_count}} Issues</span>
+      </md-card-footer>
+    </md-card>
+  </div>
+</div>

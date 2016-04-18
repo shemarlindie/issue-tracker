@@ -19,35 +19,21 @@
         return ConstantService.constants.priority[code] ? ConstantService.constants.priority[code].$value : '';
       }
     }])
-    .filter('UserList', ['User', function (User) {
-      var cache = {};
+    .filter('UserList', function () {
       var formatter = function (users, separator) {
-        return users.map(function (val) {
-          return val.first_name + ' ' + val.last_name;
-        }).join(separator)
-      }
-
-      return function (uids, separator) {
-        if (!uids) return '-';
-
-        var key = uids.join();
-
-        if (!cache[key]) {
-          User.uidToObj(uids).then(function (result) {
-            if (result && result.length) {
-              cache[key] = result;
-            }
-            else {
-              cache[key] = [];
-            }
-          });
-
-          return '...';
+        if (users) {
+          return users.map(function (user) {
+            return user.first_name + ' ' + user.last_name;
+          }).join(separator)
         }
         else {
-          return formatter(cache[key]);
+          return ' - ';
         }
+      };
+
+      return function (users, separator) {
+        return formatter(users, separator);
       }
-    }]);
+    });
 
 })(angular);

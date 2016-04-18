@@ -3,8 +3,8 @@
   'use strict';
 
   angular.module('app.user')
-    .controller('UserCtrl', ['User', 'IssueService', '$state', '$stateParams', '$scope', 'FirebaseService', '$mdDialog', '$mdSidenav', '$location',
-      function (User, IssueService, $state, $stateParams, $scope, FirebaseService, $mdDialog, $mdSidenav, $location) {
+    .controller('UserCtrl', ['UserService', '$state', '$stateParams', '$scope', '$mdDialog', '$mdSidenav', '$location',
+      function (UserService, $state, $stateParams, $scope, $mdDialog, $mdSidenav, $location) {
         var vm = this; // view model
         
         vm.sidenav = {
@@ -28,7 +28,7 @@
           ],
 
           selectedSection: undefined
-        }
+        };
 
         vm.firstLoad = true;
 
@@ -65,24 +65,6 @@
         vm.user = undefined;
 
         vm.init = function () {
-          // keep track of user auth status  
-          var authCallback = function (authData) {
-            if (authData) {
-              User.get().then(function (user) {
-                vm.user = user;
-              });
-            }
-            else {
-              vm.user = undefined;
-            }
-          }
-
-          FirebaseService.onAuth(authCallback);
-
-          $scope.$on('$destroy', function () {
-            FirebaseService.offAuth(authCallback);
-          });
-          
           // select section specified by the url on first load
           var secIndex = $location.search()['section'];
           if (secIndex >= 0 && secIndex < vm.sidenav.sections[0].children.length) {
@@ -93,7 +75,7 @@
           }
 
           vm.firstLoad = false;
-        }
+        };
 
         vm.saveProfile = function () {
           vm.updatingProfile = true;
@@ -112,7 +94,7 @@
             .finally(function () {
               vm.updatingProfile = false;
             });
-        }
+        };
 
         vm.changeEmail = function () {
           vm.changingEmail = true;
@@ -138,7 +120,7 @@
             .finally(function () {
               vm.changingEmail = false;
             });
-        }
+        };
 
         vm.removeAccount = function () {
           // confirm danger action
@@ -158,7 +140,7 @@
               var data = {
                 email: vm.user.email,
                 password: vm.userDelete.password
-              }
+              };
               User.remove(data)
                 .then(function () {
                   vm.userDelete = {};
@@ -171,7 +153,7 @@
                   vm.removingAccount = false;
                 });
             });
-        }
+        };
 
         vm.changePassword = function () {
           vm.changingPassword = true;
@@ -191,7 +173,7 @@
             .finally(function () {
               vm.changingPassword = false;
             });
-        }
+        };
 
         vm.resetPassword = function () {
           vm.resettingPassword = true;
@@ -211,13 +193,13 @@
             .finally(function () {
               vm.resettingPassword = false;
             });
-        }
+        };
 
         vm.signup = function () {
           vm.signingUp = true;
           User.create(vm.signupData)
             .then(function (data) {
-              $state.go('app.issues');
+              $state.go('app.home');
             })
             .catch(function (error) {
               vm.signupError = error;
@@ -225,7 +207,7 @@
             .finally(function () {
               vm.signingUp = false;
             });
-        }
+        };
 
         vm.login = function () {
           vm.loggingIn = true;
@@ -236,7 +218,7 @@
                 $state.go(state.name, state.params);
               }
               else {
-                $state.go('app.issues');
+                $state.go('app.home');
               }
             })
             .catch(function (error) {
@@ -245,11 +227,23 @@
             .finally(function () {
               vm.loggingIn = false;
             });
-        }
+        };
 
         vm.logout = function () {
           User.logout();
-        }
+        };
+
+        vm.hasSidenav = function () {
+          return $state.current.data && $state.current.data.hasSidenav;
+        };
+
+        vm.showSidenavToggle = function () {
+          return $mdMedia('xs') || $mdMedia('sm');
+        };
+
+        vm.toggleSidenav = function () {
+          $mdSidenav('sidenav-main').toggle();
+        };
 
         vm.onSectionSelected = function (section) {
           vm.sidenav.selectedSection = section;
@@ -264,7 +258,7 @@
           // update url to remember section
           var secIndex = vm.sidenav.sections[0].children.indexOf(section);
           $state.go('.', { section: secIndex > -1 ? secIndex : 0 }, { notify: false });
-        }
+        };
 
 
         // ---------------------

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="app" ng-controller="AppCtrl as vm">
+<html lang="en" ng-app="app">
 
 <head>
+  <base href="/">
   <meta charset="UTF-8" />
   <meta http-equiv="cache-control" content="no-cache" />
   <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
   <meta http-equiv="pragma" content="no-cache" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+  <meta name="description" content="Issue tracking and project management for V75 software projects." />
   <!-- FAVICON -->
   <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png" />
   <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png" />
@@ -30,12 +32,13 @@
   <link rel="stylesheet" href="bower_components/animate.css/animate.min.css" />
   <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
   <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css" />
+  <link rel="stylesheet" href="bower_components/angular-material-data-table/dist/md-data-table.min.css" />
   <link rel="stylesheet" href="css/material-icons.css" />
   <link rel="stylesheet" href="modules/external/md-sidenav-menu/md-sidenav-menu.css" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
-<body layout="column">
+<body ng-controller="AppCtrl as vm" layout="column">
   <!-- PRELOADER -->
   <div id="preloader">
     <style>
@@ -75,23 +78,25 @@
   <!-- / PRELOADER -->
   <!-- APP SCRIPTS -->
   <!-- **DEBUG -->
-  <script src="bower_components/jquery/dist/jquery.js"></script>
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-animate/angular-animate.js"></script>
-  <script src="bower_components/angular-aria/angular-aria.js"></script>
-  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-  <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-  <script src="bower_components/angular-material/angular-material.js"></script>
-  <script src="bower_components/moment/moment.js"></script>
-  <script src="bower_components/angular-moment/angular-moment.js"></script>
-  <script src="bower_components/firebase/firebase-debug.js"></script>
-  <script src="bower_components/angularfire/dist/angularfire.js"></script>
-  <script src="bower_components/marked/lib/marked.js"></script>
-  <script src="bower_components/angular-marked/dist/angular-marked.js"></script>
-  <script src="bower_components/angular-loading-bar/build/loading-bar.min.js"></script>  
+  <!--<script src="bower_components/jquery/dist/jquery.js"></script>-->
+  <!--<script src="bower_components/angular/angular.js"></script>-->
+  <!--<script src="bower_components/angular-animate/angular-animate.js"></script>-->
+  <!--<script src="bower_components/angular-aria/angular-aria.js"></script>-->
+  <!--<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>-->
+  <!--<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>-->
+  <!--<script src="bower_components/angular-material/angular-material.js"></script>-->
+  <!--<script src="bower_components/moment/moment.js"></script>-->
+  <!--<script src="bower_components/angular-moment/angular-moment.js"></script>-->
+  <!--<script src="bower_components/marked/lib/marked.js"></script>-->
+  <!--<script src="bower_components/angular-marked/dist/angular-marked.js"></script>-->
+  <!--<script src="bower_components/angular-loading-bar/build/loading-bar.min.js"></script>  -->
+  <!--<script src="bower_components/a0-angular-storage/dist/angular-storage.min.js"></script>-->
+  <!--<script src="bower_components/angular-cache-buster/angular-cache-buster.js"></script>-->
+  <!--<script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>-->
+  <!--<script src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>-->
   <!-- / **DEBUG-->
   <!-- **DISTRIBUTION -->
-  <!--<script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/angular/angular.min.js"></script>
   <script src="bower_components/angular-animate/angular-animate.min.js"></script>
   <script src="bower_components/angular-aria/angular-aria.min.js"></script>
@@ -100,29 +105,31 @@
   <script src="bower_components/angular-material/angular-material.min.js"></script>
   <script src="bower_components/moment/min/moment.min.js"></script>
   <script src="bower_components/angular-moment/angular-moment.min.js"></script>
-  <script src="bower_components/firebase/firebase.js"></script>
-  <script src="bower_components/angularfire/dist/angularfire.min.js"></script>
-  <script src="bower_components/marked/marked.min.js"></script>
+  <script src="bower_components/marked/lib/marked.js"></script>
   <script src="bower_components/angular-marked/dist/angular-marked.min.js"></script>
-  <script src="bower_components/angular-loading-bar/build/loading-bar.min.js"></script>-->
+  <script src="bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
+  <script src="bower_components/a0-angular-storage/dist/angular-storage.min.js"></script>
+  <script src="bower_components/angular-cache-buster/angular-cache-buster.js"></script>
+  <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+  <script src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
   <!-- / ** DISTRIBUTION -->
   <script src="modules/external/md-sidenav-menu/md-sidenav-menu.js"></script>
-  <script src="modules/app.firebase/firebase.module.js"></script>
-  <script src="modules/app.firebase/firebase.service.js"></script>
-  <script src="modules/app.firebase/constant.service.js"></script>
-  <script src="modules/app.firebase/tag.service.js"></script>
   <script src="modules/app.user/user.module.js"></script>
   <script src="modules/app.user/user.service.js"></script>
   <script src="modules/app.user/user.ctrl.js"></script>
   <script src="modules/app.issue/issue.module.js"></script>
   <script src="modules/app.issue/filters.js"></script>
   <script src="modules/app.issue/issue.service.js"></script>
+  <script src="modules/app.issue/comment.service.js"></script>
   <script src="modules/app.issue/issue.ctrl.js"></script>
   <script src="modules/app.issue/issue.feed.ctrl.js"></script>
   <script src="modules/app.project/project.module.js"></script>
   <script src="modules/app.project/project.service.js"></script>
   <script src="modules/app.project/project.ctrl.js"></script>
+  <script src="modules/app.project/project.list.ctrl.js"></script>
   <script src="modules/app/app.module.js"></script>
+  <script src="modules/app/app.service.js"></script>
+  <script src="modules/app/tag.service.js"></script>
   <script src="modules/app/app.ctrl.js"></script>
   <script src="modules/app/app.filters.js"></script>
   <script src="modules/app/app.directives.js"></script>
@@ -130,41 +137,41 @@
   <script src="modules/app/app.config.router.js"></script>
   <!-- / APP SCRIPTS -->
 
-  <md-content class="md-hue-1" layout="column" flex>    
+  <md-content class="md-hue-1" layout="column" flex>
     <md-toolbar id="app-toolbar" class="md-hue-2 md-whiteframe-1dp animated fadeInDown">
       <div class="md-toolbar-tools" layout="row">
         <md-button ng-if="vm.hasSidenav() && vm.showSidenavToggle()" ng-click="vm.toggleSidenav()" class="md-icon-button"><md-icon>menu</md-icon></md-button>
-        <md-button ui-sref="app.issues" class="no-margin">
+        <md-button ui-sref="app.home" class="no-margin">
           <md-icon class="spin-icon">donut_small</md-icon>
           V75 <span hide-xs>Issue</span> Tracker
         </md-button>
         <span flex></span>
-        <md-button ng-if="!vm.user" ui-sref="login">Login</md-button>
-        
-        <md-menu ng-if="vm.user" md-offset="0 45" md-position-mode="target-right target" title="{{vm.user.email}}">
-          
+        <md-button ng-if="!$root.user" ui-sref="login">Login</md-button>
+
+        <md-menu ng-if="$root.user" md-offset="0 45" md-position-mode="target-right target" title="{{$root.user.email}}">
+
           <md-button class="no-margin button-link" ng-click="$mdOpenMenu($event)">
             <span>
-              <span class="text-lowercase" hide-xs>{{vm.user.email}}</span>&nbsp;
-              <span class="text-uppercase" show-xs hide-gt-xs><strong>{{vm.user.first_name.charAt(0) + vm.user.last_name.charAt(0)}}</strong></span>
+              <span class="text-lowercase" hide-xs>{{$root.user.email}}</span>&nbsp;
+              <span class="text-uppercase" show-xs hide-gt-xs><strong>{{$root.user.initials}}</strong></span>
               <md-icon class="material-icons">person</md-icon>
             </span>
           </md-button>
-          
+
           <md-menu-content width="4">
             <span class="text-center m-t-xs" hide-gt-xs>
-              <span class="text-sm text-ellipsis">{{vm.user.email}}</span>&nbsp;
+              <span class="text-sm text-ellipsis">{{$root.user.email}}</span>&nbsp;
               <md-divider class="m-t-sm"></md-divider>
             </span>
             <md-menu-item>
-              <md-button ui-sref="account">
+              <md-button ng-disabled="true" ui-sref="account">
                 <md-icon class="md-primary">person</md-icon>
                 <span>Account</span>
               </md-button>
             </md-menu-item>
             <md-button class="md-raised md-warn md-hue-2" ng-click="vm.logout()" ng-disabled="loggingOut">Logout</md-button>
           </md-menu-content>
-          
+
         </md-menu>
       </div>
     </md-toolbar>

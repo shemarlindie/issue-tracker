@@ -1,0 +1,57 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+
+    encoders:
+        AppBundle\Entity\BaseUser: bcrypt
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        in_memory:
+            memory: ~
+
+        db_users:
+            entity:
+                class: AppBundle:User
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        auth:
+          pattern:  ^/auth/login
+          provider: db_users
+          stateless: true
+          anonymous: true
+          form_login:
+            check_path:     /auth/login_check
+            require_previous_session: false
+            success_handler:          app.auth_success_handler
+            failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+
+        api:
+          pattern:   ^/
+          stateless: true
+          anonymous: true
+          provider: db_users
+          lexik_jwt:
+           authorization_header:
+             enabled: true
+             prefix:  Bearer
+           query_parameter:
+             enabled: true
+             name:    bearer
+           throw_exceptions:   false
+           create_entry_point: true
+
+    access_control:
+        - { path: ^/auth/auth_check, roles: IS_AUTHENTICATED_FULLY }
+#        - { path: ^/auth/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/auth/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/,       roles: IS_AUTHENTICATED_FULLY }

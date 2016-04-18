@@ -1,27 +1,27 @@
-<div ng-controller="UserCtrl as vm" class="p-md no-padding-xs">
+<div ng-controller="AppCtrl as vm" class="p-md no-padding-xs">
   <div class="auth-card-wrapper-sm">
     <md-card>
       <md-card-content>
-        <form name="vm.loginForm" ng-submit="vm.loginForm.$valid && vm.login()">
+        <form name="vm.loginState.form" ng-submit="vm.loginState.form.$valid && vm.login()">
           <div class="text-muted text-sm">
             <p>Login with your Issue Tracker credentials.</p>
             <p>Need an account? <a ui-sref="signup">Signup</a>.</p>
-            <p>Forgot your password? <a ui-sref="password-reset">Request a new one</a>.</p>
+            <!--<p>Forgot your password? <a ui-sref="password-reset">Request a new one</a>.</p>-->
           </div>
           <div layout="column">
             <md-input-container class="no-m">
-              <label>Email</label>
-              <input type="email" ng-model="vm.loginData.email" required>
+              <label>Username</label>
+              <input type="text" ng-model="vm.loginState.credentials._username" required>
             </md-input-container>
             <md-input-container class="no-m">
               <label>Password</label>
-              <input type="password" ng-model="vm.loginData.password" required>
+              <input type="password" ng-model="vm.loginState.credentials._password" required>
             </md-input-container>
-            <div class="text-center">
-              <md-checkbox class="md-primary" ng-model="vm.loginData.rememberMe">Remember me</md-checkbox>
-            </div>
-            <p ng-show="vm.loginError" ng-bind="vm.loginError" class="text-danger text-sm"></p>
-            <md-button ng-disabled="vm.loggingIn" type="submit" class="md-primary md-raised">
+            <!--<div class="text-center">-->
+              <!--<md-checkbox class="md-primary" ng-model="vm.loginState.credentials._remember_me">Remember me</md-checkbox>-->
+            <!--</div>-->
+            <p ng-show="vm.loginState.errors.form" ng-bind="vm.loginState.errors.form" class="text-danger text-sm"></p>
+            <md-button ng-disabled="vm.loginState.loading" type="submit" class="md-primary md-raised">
               <div layout="row" layout-align="center center">
                 <md-progress-circular ng-show="vm.loggingIn" md-mode="indeterminate" md-diameter="30"></md-progress-circular>
                 <span>Login</span>

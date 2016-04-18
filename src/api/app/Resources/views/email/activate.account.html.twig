@@ -1,0 +1,9 @@
+{% extends 'email/base.email.html.twig' %}
+
+{% block body_title %}Hi, {{ user.getFullName() }}.{% endblock %}
+{% block body_subtitle %}Welcome to Rental Raters!{% endblock %}
+
+{% block body_content %}
+  <p>Open the link below to activate your account.</p>
+  <a href="{{ host }}/#/activate-account?token={{ user.getConfirmationToken() }}"><b>Activate Account</b></a>
+{% endblock %}

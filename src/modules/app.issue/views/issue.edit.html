@@ -5,90 +5,115 @@
 
   <div layout="column" layout-align="start center">
     <md-card class="card-lg">
-      <form name="vm.issueForm" ng-submit="vm.editing ? vm.update() : vm.create()">
+      <form name="vm.issueForm" ng-submit="vm.issueForm.$valid && vm.editing ? vm.update() : vm.create()">
         <md-card-content>
           <div layout="column">
-            <md-autocomplete class="m-b" ng-required="true" md-autoselect="true" md-min-length="0" md-selected-item="vm.issue.project" md-search-text="vm.projectSearch.searchText" md-items="project in vm.projectSearch.projects | filter:vm.projectSearch.search"
-            md-item-text="project.name" placeholder="Project *">
-              <span md-highlight-text="vm.projectSearch.searchText">{{project.name}}</span>
+            <md-autocomplete required class="m-b" md-autoselect="true" md-min-length="0"
+                             md-selected-item="vm.issue.project"
+                             md-search-text="vm.projectSearch.searchText"
+                             md-items="project in vm.projectSearch.search(vm.projectSearch.searchText)"
+                             md-item-text="project.name"
+                             md-autoselect="true"
+                             md-delay="300"
+                             md-input-minlength="0"
+                             md-match-case-insensitive="true"
+                             md-autofocus="true"
+                             placeholder="Project *">
+              <span md-highlight-text="vm.projectSearch.searchText">
+                {{project.name}} {{ project.client ? ':: ' + project.client : '' }}
+              </span>
             </md-autocomplete>
 
             <md-input-container class="no-m">
-              <label>Issue Title *</label>
-              <input type="text" ng-model="vm.issue.name" required />
+              <label>Title *</label>
+              <input type="text" ng-model="vm.issue.name" required/>
             </md-input-container>
 
             <md-input-container class="no-m">
               <label>Description *</label>
-              <textarea type="text" rows="5" columns="1" ng-model="vm.issue.description" required></textarea>
+              <textarea type="text" rows="5" ng-model="vm.issue.description" md-maxlength="500" required></textarea>
             </md-input-container>
 
             <md-content>
               <md-datepicker ng-model="vm.issue.date_due" md-placeholder="Due Date"></md-datepicker>
             </md-content>
 
-            <md-chips class="m-t" ng-model="vm.issue.testers" md-autocomplete-snap md-require-match="true">
-              <md-autocomplete md-autoselect="true" md-min-length="0" md-selected-item="vm.testerSearch.selectedItem" md-search-text="vm.testerSearch.searchText" md-items="user in vm.testerSearch.users | filter:vm.testerSearch.search"
-              md-item-text="user.email" placeholder="Testers">
-                <span md-highlight-text="vm.testerSearch.searchText">{{user.first_name}} :: {{ user.email }}</span>
+            <md-chips class="m-t" ng-model="vm.issue.testers"
+                      md-autocomplete-snap md-require-match="true">
+              <md-autocomplete md-autoselect="true" md-min-length="0"
+                               md-selected-item="vm.testerSearch.selectedItem"
+                               md-search-text="vm.testerSearch.searchText"
+                               md-items="user in vm.testerSearch.search(vm.testerSearch.searchText)"
+                               md-item-text="user.email"
+                               md-autoselect="true"
+                               placeholder="Testers">
+                <small md-highlight-text="vm.testerSearch.searchText">{{user.first_name}} :: {{ user.email }}</small>
               </md-autocomplete>
               <md-chip-template>
-                <span>
-                <strong>{{$chip.first_name}} {{$chip.last_name}}</strong>
-                <em>{{$chip.email}}</em>
-              </span>
+                <small>
+                  <strong>{{$chip.first_name}}</strong>
+                  <em>{{$chip.email}}</em>
+                </small>
               </md-chip-template>
             </md-chips>
 
-            <md-chips class="m-t" ng-model="vm.issue.assigned_to" md-autocomplete-snap md-require-match="true">
-              <md-autocomplete md-autoselect="true" md-min-length="0" md-selected-item="vm.fixerSearch.selectedItem" md-search-text="vm.fixerSearch.searchText" md-items="user in vm.fixerSearch.users | filter:vm.fixerSearch.search"
-              md-item-text="user.email" placeholder="Fixers">
-                <span md-highlight-text="vm.fixerSearch.searchText">{{user.first_name}} :: {{ user.email }}</span>
+            <md-chips class="m-t" ng-model="vm.issue.fixers" md-autocomplete-snap md-require-match="true">
+              <md-autocomplete md-autoselect="true" md-min-length="0"
+                               md-selected-item="vm.fixerSearch.selectedItem"
+                               md-search-text="vm.fixerSearch.searchText"
+                               md-items="user in vm.fixerSearch.search(vm.fixerSearch.searchText)"
+                               md-item-text="user.email" placeholder="Fixers">
+                <small md-highlight-text="vm.fixerSearch.searchText">{{user.first_name}} :: {{ user.email }}</small>
               </md-autocomplete>
               <md-chip-template>
-                <span>
-                <strong>{{$chip.first_name}} {{$chip.last_name}}</strong>
-                <em>{{$chip.email}}</em>
-              </span>
+                <small>
+                  <strong>{{$chip.first_name}}</strong>
+                  <em>{{$chip.email}}</em>
+                </small>
               </md-chip-template>
             </md-chips>
 
-            <md-chips class="m-t" ng-model="vm.issue.tags" md-autocomplete-snap md-require-match="false">
-              <md-autocomplete md-autoselect="true" md-min-length="0" md-selected-item="vm.tagSearch.selectedItem" md-search-text="vm.tagSearch.searchText" md-items="tag in vm.tagSearch.tags | filter:vm.tagSearch.search"
-              md-item-text="tag" placeholder="Tags">
-                <span md-highlight-text="vm.tagSearch.searchText">{{tag.name}}</span>
-              </md-autocomplete>
-              <md-chip-template>
-                <span>
-                  <strong>{{$chip.name}}</strong>
-                </span>
-              </md-chip-template>
-            </md-chips>
+            <!--<md-chips class="m-t" ng-model="vm.issue.tags" md-autocomplete-snap md-require-match="false">-->
+              <!--<md-autocomplete md-autoselect="true" md-input-minlength="0"-->
+                               <!--md-selected-item="vm.tagSearch.selectedItem"-->
+                               <!--md-search-text="vm.tagSearch.searchText"-->
+                               <!--md-items="tag in vm.tagSearch.search(vm.tagSearch.searchText)"-->
+                               <!--md-item-text="tag" placeholder="Tags">-->
+                <!--<span md-highlight-text="vm.tagSearch.searchText">{{tag.name}}</span>-->
+              <!--</md-autocomplete>-->
+              <!--<md-chip-template>-->
+                <!--<span>-->
+                  <!--<strong>{{$chip.name}}</strong>-->
+                <!--</span>-->
+              <!--</md-chip-template>-->
+            <!--</md-chips>-->
 
             <div class="m-t" layout="row" layout-wrap>
               <md-input-container>
                 <label>Priority</label>
-                <md-select md-on-open="vm.priorityList.$loaded()" ng-model="vm.issue.priority">
-                  <md-option ng-repeat="p in vm.priorityList" ng-value="$index">{{p.$value}}</md-option>
+                <md-select ng-model="vm.issue.priority_id" ng-required="true">
+                  <md-option ng-repeat="item in vm.priorityList" ng-value="item.id">{{item.name}}</md-option>
                 </md-select>
               </md-input-container>
               <md-input-container>
                 <label>Type</label>
-                <md-select md-on-open="vm.typeList.$loaded()" ng-model="vm.issue.type">
-                  <md-option ng-repeat="type in vm.typeList" ng-value="$index">{{type.$value}}</md-option>
+                <md-select ng-model="vm.issue.type_id" ng-required="true">
+                  <md-option ng-repeat="item in vm.typeList" ng-value="item.id">{{item.name}}</md-option>
                 </md-select>
               </md-input-container>
               <md-input-container>
                 <label>Status</label>
-                <md-select md-on-open="vm.statusList.$loaded()" ng-model="vm.issue.status">
-                  <md-option ng-repeat="s in vm.statusList | orderBy:$id" ng-value="$index">{{s.$value}}</md-option>
+                <md-select ng-model="vm.issue.status_id" ng-required="true">
+                  <md-option ng-repeat="item in vm.statusList" ng-value="item.id">{{item.name}}</md-option>
                 </md-select>
               </md-input-container>
             </div>
           </div>
         </md-card-content>
         <md-card-footer layout="row" layout-align="end">
-          <md-button ng-disabled="issueForm.$pristine" type="submit" class="md-raised md-primary">{{vm.editing ? 'Update' : 'Create'}}</md-button>
+          <md-button ng-disabled="issueForm.$pristine" type="submit" class="md-raised md-primary">{{vm.editing ?
+            'Update' : 'Create'}}
+          </md-button>
         </md-card-footer>
       </form>
     </md-card>

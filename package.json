@@ -1,9 +1,11 @@
 {
-  "name": "V75 Issue Tracker",
+  "name": "V75-Issue-Tracker",
   "version": "1.0.0",
   "description": "Project management and issue tracking.",
   "main": "",
-  "dependencies": {},
+  "dependencies": {
+    "gulp-concat": "^2.6.0"
+  },
   "devDependencies": {
     "browser-sync": "^2.10.0",
     "del": "^2.2.0",

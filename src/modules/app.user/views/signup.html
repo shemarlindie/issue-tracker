@@ -1,8 +1,8 @@
-<div ng-controller="UserCtrl as vm" class="p-md no-padding-xs">
+<div ng-controller="AppCtrl as vm" class="p-md no-padding-xs">
   <div class="auth-card-wrapper">
     <md-card>
       <md-card-content>
-        <form name="vm.signupForm" ng-submit="vm.signupForm.$valid && vm.signup()">
+        <form name="vm.registerState.form" ng-submit="vm.registerState.form.$valid && vm.register()">
           <div class="text-muted text-sm">
             <p>Create a Issue Tracker account with the secret code provided by <a href="http://version75.com" target="_blank">V75</a>.</p>
             <p>Already have an account? <a ui-sref="login">Login</a>.</p>
@@ -11,36 +11,40 @@
             <div layout="row" layout-xs="column">
               <md-input-container class="no-m" flex>
                 <label>First Name</label>
-                <input type="text" ng-model="vm.signupData.first_name" required>
+                <input type="text" ng-model="vm.registerState.data.first_name" required>
               </md-input-container>
               <md-input-container class="no-m" flex>
                 <label>Last Name</label>
-                <input type="text" ng-model="vm.signupData.last_name" required>
+                <input type="text" ng-model="vm.registerState.data.last_name" required>
               </md-input-container>
             </div>
 
             <md-input-container class="no-m">
+              <label>Username</label>
+              <input type="text" ng-model="vm.registerState.data.username" required>
+            </md-input-container>
+            <md-input-container class="no-m">
               <label>Email</label>
-              <input type="email" ng-model="vm.signupData.email" required>
+              <input type="email" ng-model="vm.registerState.data.email" required>
             </md-input-container>
             <md-input-container class="no-m">
               <label>Password</label>
-              <input type="password" ng-model="vm.signupData.password" minlength="6" required>
+              <input type="password" ng-model="vm.registerState.data.plain_password" minlength="6" required>
             </md-input-container>
             <md-input-container class="no-m">
               <label>Confirm Password</label>
-              <input compare-to="vm.signupData.password" type="password" ng-model="vm.signupData.confirm_password" required>
+              <input compare-to="vm.registerState.data.plain_password" type="password" ng-model="vm.registerState.data.plain_password_confirmation" required>
             </md-input-container>
-            <md-input-container class="no-m">
-              <label>Secret Code</label>
-              <input type="password" ng-model="vm.signupData.secret" required>
-            </md-input-container>
+            <!--<md-input-container class="no-m">-->
+              <!--<label>Secret Code</label>-->
+              <!--<input type="password" ng-model="vm.registerState.data.secret" required>-->
+            <!--</md-input-container>-->
             
-            <p ng-show="vm.signupError" ng-bind="vm.signupError" class="text-danger text-sm"></p>
+            <p ng-show="vm.registerState.errors.form" ng-bind="vm.registerState.errors.form" class="text-danger text-sm"></p>
 
-            <md-button ng-disabled="vm.signingUp" type="submit" class="md-primary md-raised">
+            <md-button ng-disabled="vm.registerState.loading" type="submit" class="md-primary md-raised">
               <div layout="row" layout-align="center center">
-                <md-progress-circular ng-show="vm.signingUp" md-mode="indeterminate" md-diameter="30"></md-progress-circular>
+                <md-progress-circular ng-show="vm.registerState.loading"" md-mode="indeterminate" md-diameter="30"></md-progress-circular>
                 <span>Signup!</span>
               </div>
             </md-button>

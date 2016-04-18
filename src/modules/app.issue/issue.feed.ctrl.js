@@ -4,92 +4,94 @@
   
   // MODULE DEFINITION
   angular.module('app.issue')
-    .controller('IssueFeedCtrl', ['$scope', '$stateParams', '$state', 'IssueService', 'User', 'TagService', 'ProjectService', 'ConstantService',
-      function ($scope, $stateParams, $state, IssueService, User, TagService, ProjectService, ConstantService) {
+    .controller('IssueFeedCtrl', ['$scope', '$stateParams', '$state', 'AppConfig', 'SecurityService', 'IssueService',
+      'UserService', 'ProjectService', '$interval',
+      function ($scope, $stateParams, $state, AppConfig, SecurityService, IssueService,
+                UserService, ProjectService, $interval) {
         var vm = this;
 
-        vm.typeList = ConstantService.constants.type;
-        vm.statusList = ConstantService.constants.status;
-        vm.priorityList = ConstantService.constants.priority;
+        vm.typeList = [];
+        vm.statusList = [];
+        vm.priorityList = [];
+        vm.users = [];
+        vm.issues = {};
 
-        vm.me = User.getUid();
+        vm.query = {
+          pageSize: 10,
+          page: 1,
+          total: 0
+        };
+
+        vm.me = SecurityService.getUser();
 
         vm.init = function () {
-          vm.resetFilters();
+          IssueService.types().then(function (response) {
+            vm.typeList = response.data;
+          });
 
-          ProjectService.connect();
-          vm.projects = ProjectService.projects;
+          IssueService.statuses().then(function (response) {
+            vm.statusList = response.data;
+          });
 
-          vm.users = User.users;
+          IssueService.priorities().then(function (response) {
+            vm.priorityList = response.data;
+          });
 
-          vm.issues = [];
-          IssueService.all()
-            .then(function (issues) {
-              vm.issues = issues;
-              console.log('issues', issues);
+          UserService.all({pageSize: 20})
+            .then(function (response) {
+              vm.users = response.data.list;
             });
 
-        }
+          vm.resetFilters();
+          vm.loadIssues();
+        };
+
+        vm.onPaginate = function() {
+          vm.loadIssues();
+        };
+
+        vm.loadIssues = function(params) {
+          params = params || {};
+          params = angular.extend({}, vm.query, params);
+          params = angular.extend(params, vm.filters);
+          params.projectId = $stateParams.id;
+
+          vm.promise = IssueService.all(params)
+            .then(function (response) {
+              vm.issues = response.data;
+
+              vm.query.total = vm.issues.page.totalCount;
+              vm.query.page = vm.issues.page.current;
+              vm.query.limit = vm.issues.page.numItemsPerPage;
+
+              // console.log('issues', vm.issues);
+
+              return response;
+            })
+            .catch(function (response) {
+              console.log('unable to load issues', response);
+            });
+        };
 
         vm.resetFilters = function () {
-          vm.filters = {
-            project: $stateParams.id ? $stateParams.id : false,
-            assigned_to: false,
-            type: -1,
-            status: -1,
-            priority: -1,
-            sort_by: 'date_updated',
-            sort_order: true
+          return vm.filters = {
+            assignedToId: undefined,
+            typeId: undefined,
+            statusId: undefined,
+            priorityId: undefined,
+            sortBy: 'dateUpdated',
+            sortOrder: 'DESC'
           }
-        }
-
-        vm.filterFn = function (issue, index, arr) {
-          var assigned_to = false;
-          var type = false;
-          var status = false;
-          var priority = false;
-          var project = false;
-
-          if (vm.filters.assigned_to !== false) {
-            assigned_to = (issue.assigned_to && issue.assigned_to.indexOf(vm.filters.assigned_to) >= 0);
-          }
-          else {
-            assigned_to = true;
-          }
-
-          if (vm.filters.type !== -1) {
-            type = (issue.type === vm.filters.type);
-          }
-          else {
-            type = true;
-          }
-
-          if (vm.filters.status !== -1) {
-            status = (issue.status === vm.filters.status);
-          }
-          else {
-            status = true;
-          }
-
-          if (vm.filters.priority !== -1) {
-            priority = (issue.priority === vm.filters.priority);
-          }
-          else {
-            priority = true;
-          }
-
-          if (vm.filters.project !== false) {
-            project = (issue.project == vm.filters.project)
-          }
-          else {
-            project = true;
-          }
-
-          return assigned_to && type && status && priority && project;
-        }
-
+        };
 
         vm.init();
+
+        var timer = $interval(vm.loadIssues, AppConfig.UPDATE_INTERVAL);
+        $scope.$on('$destroy', function() {
+          // console.log('destroying issue list timer');
+
+          $interval.cancel(timer);
+        });
       }])
   ;
 

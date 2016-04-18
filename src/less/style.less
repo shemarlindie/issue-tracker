@@ -38,9 +38,13 @@ a, a:visited, a:hover {
   text-decoration: none;
 }
 
-a:hover {
-  text-decoration: underline;
+md-toolbar a, md-toolbar a:visited, md-toolbar a:hover {
+  color: inherit;
 }
+
+// a:hover {
+//   text-decoration: underline;
+// }
 
 .middot {
   font-weight: bold;
@@ -219,7 +223,9 @@ md-sidenav {
   md-card.card-lg, md-card.card-md, md-card.card-sm {
     max-width: auto;
     min-width: auto;
-    width: 97%;
+    width: auto;
+    margin-left: 16px;
+    margin-right: 16px;
   }
 } 
 
@@ -227,7 +233,9 @@ md-sidenav {
   md-card.card-lg, md-card.card-md, md-card.card-sm {
     max-width: auto;
     min-width: auto;
-    width: 97%;
+    width: auto;
+    margin-left: 8px;
+    margin-right: 8px;
   }
   
   .filter-list md-select-value {

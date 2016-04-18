@@ -3,6 +3,6 @@
   'use strict';
   
   // MODULE DEFINITION
-  angular.module('app.project', ['app.firebase']);
+  angular.module('app.project', []);
 
 })(angular);

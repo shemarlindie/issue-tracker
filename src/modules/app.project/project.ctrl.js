@@ -1,11 +1,13 @@
 /* global angular */
 (function (angular) {
   'use strict';
-  
+
   // MODULE DEFINITION
   angular.module('app.project')
-    .controller('ProjectCtrl', ['$scope', '$state', 'User', 'ProjectService', 'TagService', '$stateParams',
-      function ($scope, $state, User, ProjectService, TagService, $stateParams) {
+    .controller('ProjectCtrl', ['$scope', '$state', 'SecurityService', 'UserService', 'ProjectService', 'TagService',
+      '$stateParams', '$mdDialog',
+      function ($scope, $state, SecurityService, UserService, ProjectService, TagService,
+                $stateParams, $mdDialog) {
         var vm = this;
 
         vm.init = function () {
@@ -13,69 +15,71 @@
 
           if (vm.editing) {
             ProjectService.get(vm.editing)
-              .then(function (data) {
-                vm.project = data;
+              .then(function (response) {
+                vm.project = response.data;
               });
           }
           else {
             vm.project = {
               tags: [],
               collaborators: []
-            }
+            };
 
-            User.get().then(function (user) {
-              vm.project.collaborators.push(user);
-            });
+            vm.project.collaborators.push(SecurityService.getUser());
           }
 
           vm.userSearch = {
-            users: User.all().then(function (data) {
-              vm.userSearch.users = data;
-            }),
-
-            search: function (value, index, array) {
-              return (value.first_name + value.last_name + value.email).toLowerCase().indexOf(vm.userSearch.searchText.toLowerCase()) >= 0;
+            search: function (text) {
+              return UserService.search(text).then(function (response) {
+                return response.data.list;
+              });
             }
-          }
+          };
 
           vm.tagSearch = {
-            tags: TagService.projectTags().then(function (tags) {
-              vm.tagSearch.tags = tags.map(function (val) {
-                return { name: val.$value, exists: true };
-              });
-            }),
-
             transformChip: function (chip) {
               if (angular.isObject(chip)) {
                 return chip;
               }
 
-              return { name: chip, exists: false }
+              return {name: chip, exists: false}
             },
 
             search: function (value, index, array) {
               return value.name.indexOf(vm.tagSearch.searchText.toLowerCase()) >= 0;
-            },
-          }
-        }
+            }
+          };
+        };
 
         vm.create = function () {
-          TagService.addToProjectTags(vm.project.tags);
-
           ProjectService.create(vm.project)
-            .then(function (ref) {
-              $state.go('app.project-detail', { id: ref.key() })
+            .then(function (response) {
+              $state.go('app.project-detail', {id: response.data.id})
             });
-        }
+        };
 
         vm.update = function () {
           ProjectService.update(vm.project).then(function (response) {
-            $state.go('app.project-detail', { id: vm.project.$id });
+            $state.go('app.project-detail', {id: response.data.id});
           }, function (error) {
-            console.log('update error', error);            
+            console.log('update error', error);
           });
-        }
+        };
 
+        vm.delete = function () {
+          var confirm = $mdDialog.confirm({
+            htmlContent: '<p><b>' + vm.project.name + '</b> will be deleted.</p>This cannot be undone.',
+            ok: 'Delete',
+            cancel: 'Cancel'
+          });
+
+          $mdDialog.show(confirm).then(function () {
+            ProjectService.delete(vm.project)
+              .then(function (ref) {
+                $state.go('app.home');
+              });
+          })
+        };
 
         vm.init();
       }])

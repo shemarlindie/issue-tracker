@@ -3,33 +3,49 @@
   'use strict';
 
   angular.module('app')
-    .config(['$stateProvider', '$urlRouterProvider',
-      function ($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
+      function ($stateProvider, $urlRouterProvider, $locationProvider) {
+        $locationProvider.html5Mode(true);
 
         $stateProvider
           .state('app', {
             url: '/',
             templateUrl: 'modules/app/views/app.layout.html',
             abstract: true,
-            requiresLogin: true,
-            hasSidenav: true,
             resolve: {
-              auth: ['FirebaseService', '$firebaseAuth', 'ConstantService',
-                function (FirebaseService, $firebaseAuth, ConstantService) {
-                  return $firebaseAuth(FirebaseService.getRef()).$requireAuth()
-                    .then(function (auth) {
-                      if (auth) {
-                        ConstantService.connect();
-                      }
-
-                      return auth;
-                    });
+              auth: ['SecurityService',
+                function (SecurityService) {
+                  console.log('refreshing user..');
+                  
+                  return SecurityService.refreshUser();
                 }]
+            },
+            data: {
+              hasSidenav: true,
+              permissions: {
+                except: ['anonymous'],
+                redirectTo: 'login'
+              }
+            }
+          })
+          .state('app.home', {
+            url: '^/projects',
+            views: {
+              'page@app': {
+                templateUrl: 'modules/app.project/views/projects.html'
+              }
+            }
+          })
+          .state('app.projects', {
+            url: '^/projects',
+            views: {
+              'page@app': {
+                templateUrl: 'modules/app.project/views/projects.html'
+              }
             }
           })
           .state('app.project-detail', {
             url: '^/project/:id/view',
-            requiresLogin: true,
             views: {
               'page@app': {
                 templateUrl: 'modules/app.project/views/project.detail.html'
@@ -38,7 +54,6 @@
           })
           .state('app.project-edit', {
             url: '^/project/:id/edit',
-            requiresLogin: true,
             views: {
               'page@app': {
                 templateUrl: 'modules/app.project/views/project.edit.html'
@@ -47,25 +62,14 @@
           })
           .state('app.project-create', {
             url: '^/project/create',
-            requiresLogin: true,
             views: {
               'page@app': {
                 templateUrl: 'modules/app.project/views/project.edit.html'
               }
             }
           })
-          .state('app.issues', {
-            url: '^/issues',
-            requiresLogin: true,
-            views: {
-              'page@app': {
-                templateUrl: 'modules/app.issue/views/issues.html'
-              }
-            }
-          })
           .state('app.issue-detail', {
-            url: '^/issue/:id/view',
-            requiresLogin: true,
+            url: '^/project/:project/issue/:id/view',
             views: {
               'page@app': {
                 templateUrl: 'modules/app.issue/views/issue.detail.html'
@@ -73,8 +77,7 @@
             }
           })
           .state('app.issue-edit', {
-            url: '^/issue/:id/edit',
-            requiresLogin: true,
+            url: '^/project/:project/issue/:id/edit',
             views: {
               'page@app': {
                 templateUrl: 'modules/app.issue/views/issue.edit.html'
@@ -83,7 +86,6 @@
           })
           .state('app.issue-create', {
             url: '^/issue/create?project',
-            requiresLogin: true,
             views: {
               'page@app': {
                 templateUrl: 'modules/app.issue/views/issue.edit.html'
@@ -93,45 +95,54 @@
           .state('signup', {
             url: '/signup',
             templateUrl: 'modules/app.user/views/signup.html',
-            notWhileLoggedIn: true
+            data: {
+              permissions: {
+                only: ['anonymous']
+              }
+            }
           })
           .state('login', {
             url: '/login?redirect',
             templateUrl: 'modules/app.user/views/login.html',
-            notWhileLoggedIn: true
+            data: {permissions: {only: ['anonymous']}}
           })
           .state('password-reset', {
             url: '/password-reset',
             templateUrl: 'modules/app.user/views/password.reset.html',
-            notWhileLoggedIn: true
+            data: {permissions: {only: ['anonymous']}}
           })
           .state('account', {
             url: '/account?section',
             templateUrl: 'modules/app.user/views/account.html',
-            requiresLogin: true,
-            hasSidenav: true,
-            reloadOnSearch: false
+            reloadOnSearch: false,
+            data: {
+              hasSidenav: true,
+              permissions: {
+                except: ['anonymous'],
+                redirectTo: 'login'
+              }
+            }
           });
 
 
         $urlRouterProvider.otherwise(function ($injector, $location) {
-          var User = $injector.get('User');
+          var SecurityService = $injector.get('SecurityService');
           var $state = $injector.get('$state');
-          if (User.isAuthenticated()) {
-            return $state.go('app.issues');
+          if (SecurityService.isAuthenticated()) {
+            return $state.go('app.home');
           }
 
           return $state.go('login');
         });
       }])
 
-  // measures against AJAX request caching
-  // Credit: http://stackoverflow.com/a/19771501
+    // measures against AJAX request caching
+    // Credit: http://stackoverflow.com/a/19771501
     .config(['$httpProvider', function ($httpProvider) {
       //initialize get if not there
       if (!$httpProvider.defaults.headers.get) {
         $httpProvider.defaults.headers.get = {};
-      }    
+      }
 
       // Answer edited to include suggestions from comments
       // because previous version of code introduced browser-related errors
@@ -142,27 +153,73 @@
       $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
       $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
     }])
+    .run(['$rootScope', 'SecurityService', '$state', function ($rootScope, SecurityService, $state) {
 
-    .run(['$rootScope', '$state', 'User',
-      function ($rootScope, $state, User) {
-        $rootScope.$on('$stateChangeStart',
-          function (event, toState, toParams, fromState, fromParams) {
-            if (toState.requiresLogin && !User.isAuthenticated()) {
-              event.preventDefault();
+      $rootScope.$on('$stateChangeStart',
+        function (event, toState, toParams, fromState, fromParams, options) {
+          console.log('changing state...');
 
-              $state.go('login', {
-                redirect: encodeURIComponent(JSON.stringify({
-                  name: toState.name,
-                  params: toParams
-                }))
-              });
+          var permissions = toState.data ? toState.data.permissions : undefined;
+
+
+          // if (toState.requiresLogin && !User.isAuthenticated()) {
+          //   event.preventDefault();
+          //
+          //   $state.go('login', {
+          //     redirect: encodeURIComponent(JSON.stringify({
+          //       name: toState.name,
+          //       params: toParams
+          //     }))
+          //   });
+          // }
+
+
+          if (permissions) {
+            if (permissions.only) {
+              var allowed = false;
+
+              for (var i = 0; i < permissions.only.length; i++) {
+                if (SecurityService.userHasPermission(permissions.only[i])) {
+                  allowed = true;
+                  break;
+                }
+              }
+
+              if (!allowed) {
+                var redirect = permissions.redirectTo || 'login';
+                event.preventDefault();
+                $state.go(redirect);
+              }
             }
+            else if (permissions.except) {
+              var allowed = true;
 
-            if (toState.notWhileLoggedIn && User.isAuthenticated()) {
-              event.preventDefault();
-              $state.go('app.issues');
+              for (var i = 0; i < permissions.except.length; i++) {
+                if (SecurityService.userHasPermission(permissions.except[i])) {
+                  allowed = false;
+                  break;
+                }
+              }
+
+              if (!allowed) {
+                var redirect = permissions.redirectTo || 'login';
+                event.preventDefault();
+                $state.go(redirect);
+              }
             }
-          })
-      }]);
+            else if (permissions.specific) {
+              var allowed = SecurityService.userTypeIs(permissions.specific);
+
+              if (!allowed) {
+                var redirect = permissions.redirectTo || 'login';
+                event.preventDefault();
+                $state.go(redirect);
+              }
+            }
+          }
+        });
+
+    }])
+  ;
 
 })(angular);

@@ -2,145 +2,58 @@
   "use strict";
 
   angular.module('app.project')
-    .factory('ProjectService', ['FirebaseService', '$firebaseArray', '$firebaseObject', 'User',
-      function (FirebaseService, $firebaseArray, $firebaseObject, User) {
+    .factory('ProjectService', ['AppConfig', '$http',
+      function (AppConfig, $http) {
+        var API_URI = AppConfig.API_URI;
 
         var service = {
-          projects: undefined,
-
-          issues: {
-
-          },
-
-          connect: function () {
-            if (this.projects === undefined) {
-              console.log('connecting project service');
-              
-              var ref = FirebaseService.getRef().child('projects');
-              this.projects = $firebaseArray(ref);
-            }
-          },
-
-          disconnect: function () {
-            if (this.projects) {
-              console.log('disconnecting project service');
-
-              this.projects.$destroy();
-              this.projects = undefined;
-            }
-          },
-
           get: function (id) {
-            service.connect();
+            return $http.get(API_URI + '/projects/' + id)
+              .then(function (response) {
+                response.data = service.unserialize(response.data);
 
-            return this.projects.$loaded().then(function (projects) {
-              var p = projects.$getRecord(id);              
-              var dnl = service.denormalize(p);
-              
-              return dnl;
-            });
+                return response;
+              });
           },
 
-          all: function () {
-            service.connect();
-
-            return this.projects.$loaded();
+          all: function (options) {
+            options = options || {};
+            return $http.get(API_URI + '/projects?' + $.param(options));
           },
 
           create: function (project) {
-            service.connect();
-            project.owner = User.getUid();
-
-            var nl = service.normalize(project);
-
-            return this.projects && this.projects.$add(nl);
+            return $http.post(API_URI + '/projects', service.serialize(project));
           },
 
           update: function (project) {
-            service.connect();
-
-            var nl = service.normalize(project);
-            
-            var updated = angular.extend(this.projects.$getRecord(nl.$id), nl);  
-            var index = this.projects.$indexFor(updated.$id);         
-
-            return this.projects && this.projects.$save(index);
+            return $http.patch(API_URI + '/projects/' + project.id, service.serialize(project));
           },
 
           delete: function (project) {
-            service.connect();
-            
-            var index = this.projects.$indexFor(project.$id); 
-            
-            return this.projects && this.projects.$remove(index);
+            return $http.delete(API_URI + '/projects/' + project.id);
           },
 
-          getIssues: function (pid) {
-            service.connect();
-
-            if (!this.issues[pid]) {
-              this.issues[pid] = $firebaseArray(FirebaseService.getRef().child('issues')
-                .orderByChild('project')
-                .equalTo(pid)
-                );
-            }
-
-            return this.issues[pid].$loaded();
+          search: function (text) {
+            return $http.get(API_URI + '/projects/search?query=' + encodeURIComponent(text));
           },
 
-          denormalize: function (project) {
-            if (!project) return null;
-            
-            var proj = angular.copy(project);
+          serialize: function (project) {
+            project = angular.copy(project);
+            project.collaborators = project.collaborators.map(function (user) {
+              return user.id;
+            });
 
+            return project;
+          },
+
+          unserialize: function (project) {
             if (project.date_due) {
-              proj.date_due = new Date(proj.date_due);
+              project.date_due = new Date(project.date_due);
             }
 
-            proj.collaborators = [];
-            if (project.collaborators) {
-              User.uidToObj(project.collaborators)
-                .then(function (data) {
-                  proj.collaborators = data;
-                });
-            }
-
-            if (project.tags) {
-              proj.tags = proj.tags.map(function (val) {
-                return { name: val, exists: true };
-              });
-            }
-            else {
-              proj.tags = [];
-            }
-
-            return proj;
-          },
-
-          normalize: function (project) {
-            if (!project) return null;
-            
-            var proj = angular.copy(project);
-
-            if (project.date_due) {
-              proj.date_due = project.date_due.valueOf();
-            }
-
-            if (project.collaborators) {
-              proj.collaborators = project.collaborators.map(function (val, index, array) {
-                return val.uid;
-              });
-            }
-
-            if (project.tags) {
-              proj.tags = project.tags.map(function (val, index, array) {
-                return val.name;
-              });
-            }
-
-            return proj;
+            return project;
           }
-        }
+        };
 
         return service;
       }])

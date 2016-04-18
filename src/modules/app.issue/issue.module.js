@@ -3,6 +3,6 @@
   'use strict';
   
   // MODULE DEFINITION
-  angular.module('app.issue', ['app.firebase', 'hc.marked']);
+  angular.module('app.issue', ['hc.marked']);
 
 })(angular);

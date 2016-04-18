@@ -4,31 +4,53 @@
   'use strict';
 
   // MODULE DEFINITION
-  angular.module('app', ['app.firebase', 'app.user', 'app.issue', 'app.project', 'ui.router', 'ngMaterial', 'ngAnimate', 'ngAria', 'ngSanitize', 'angular-loading-bar', 'md-sidenav-menu', 'angularMoment'])
+  angular.module('app', [
+      'ui.router',
+      'ngMaterial',
+      'ngAnimate',
+      'ngAria',
+      'ngSanitize',
+      'angular-loading-bar',
+      'md-sidenav-menu',
+      'angularMoment',
+      'angular-storage',
+      'ngCacheBuster',
+      'angularFileUpload',
+      'md.data.table',
 
-  // measures against template caching
-  // Credit: http://stackoverflow.com/a/27432167
-    .config(['$provide', function ($provide) {
-      // Set a suffix outside the decorator function 
-      var cacheBuster = Date.now().toString();
+      'app.user',
+      'app.issue',
+      'app.project'
+    ])
+    // add token header to each request
+    .config(['$httpProvider', function ($httpProvider) {
+      $httpProvider.interceptors.push(['store', function (store) {
+        return {
+          request: function (config) {
+            var token = store.get('token');
 
-      function templateFactoryDecorator($delegate) {
-        var fromUrl = angular.bind($delegate, $delegate.fromUrl);
-        $delegate.fromUrl = function (url, params) {
-          if (url !== null && angular.isDefined(url) && angular.isString(url)) {
-            url += (url.indexOf("?") === -1 ? "?" : "&");
-            url += "v=" + cacheBuster;
+            if (token) {
+              config.headers['Authorization'] = 'Bearer ' + token;
+            }
+
+            return config;
           }
-
-          return fromUrl(url, params);
-        };
-
-        return $delegate;
-      }
-
-      $provide.decorator('$templateFactory', ['$delegate', templateFactoryDecorator]);
+        }
+      }]);
     }])
+    // ngCacheBuster config
+    .config(['httpRequestInterceptorCacheBusterProvider',
+      function (httpRequestInterceptorCacheBusterProvider) {
+        httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*views\/.+\.html.*/], true);
+      }])
+    .run(['$rootScope', '$state', 'SecurityService', function ($rootScope, $state, SecurityService) {
+      SecurityService.loadUser();
 
+      // refresh user object on app start
+      SecurityService.refreshUser();
+
+      $rootScope.$state = $state;
+    }])
     .run(function () {
       // remove preloader
       var preloader = $('#preloader').addClass('animated fadeOut');
