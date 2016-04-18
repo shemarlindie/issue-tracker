@@ -24,20 +24,21 @@ var browserSync = require('browser-sync').create();
 // SETTINGS
 var DIST_DIR = './dist';
 var COPY_FILES = [
-  './src/api/**/*.*', // symfony project
-  '!./src/api/var/cache/**/*.*',
-  '!./src/api/var/logs/**/*.*',
-  '!./src/api/var/sessions/**/*.*',
+  './src/api/**/*', // symfony project
+  '!./src/api/var/cache/**/*',
+  '!./src/api/var/logs/**/*',
+  '!./src/api/var/sessions/**/*',
 
-  './src/bower_components/**/*.*',
-  './src/css/**/*.*',
-  './src/favicon/**/*.*',
-  './src/fonts/**/*.*',
+  './src/bower_components/**/*',
+  './src/css/**/*',
+  './src/favicon/**/*',
+  './src/fonts/**/*',
 
-  './src/modules/**/*.*',
+  './src/modules/**/*',
   '!./src/modules/**/*.js', // exclude; copied during minification
 
   './src/browserconfig.xml',
+  './src/manifest.json',
   './src/favicon.ico',
   './src/index.html'
 ];
@@ -123,15 +124,21 @@ gulp.task('clean', function () {
 });
 
 gulp.task('copy', function () {
-  gulp.src(COPY_FILES, { base: './src' })
+  gulp.src(COPY_FILES, { base: './src', dot: true })
     .pipe(gulp.dest(DIST_DIR));
 });
 
 gulp.task('minify-js', function () {
-  gulp.src(DIST_DIR + '/app/**/*.js')
+  gulp.src('./src/modules/**/*.js', { base: './src/modules' })
     .pipe(plumber())
+    .pipe(sourcemaps.init())
     .pipe(uglify())
-    .pipe(gulp.dest(DIST_DIR + '/app'));
+    .pipe(sourcemaps.write('./sourcemaps'))
+    .pipe(gulp.dest(DIST_DIR + '/modules'));
+  // gulp.src(DIST_DIR + '/app/**/*.js')
+  //   .pipe(plumber())
+  //   .pipe(uglify())
+  //   .pipe(gulp.dest(DIST_DIR + '/app'));
 });
 
 gulp.task('concat', function() {

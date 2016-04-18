@@ -17,6 +17,7 @@
       'ngCacheBuster',
       'angularFileUpload',
       'md.data.table',
+      'wu.masonry',
 
       'app.user',
       'app.issue',
