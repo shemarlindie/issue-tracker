@@ -24,13 +24,13 @@
           vm.loadProjects();
         };
 
-        vm.loadProjects = function (params) {
-          console.log('loadProjects');
+        vm.loadProjects = function (params, ignoreLoadingBar) {
+          // console.log('loadProjects');
 
           params = params || {};
           params = angular.extend({}, vm.query, params);
 
-          vm.promise = ProjectService.all(params)
+          vm.promise = ProjectService.all(params, ignoreLoadingBar)
             .then(function (response) {
               vm.projects = response.data;
 
@@ -55,7 +55,9 @@
 
         vm.init();
 
-        var timer = $interval(vm.loadProjects, AppConfig.UPDATE_INTERVAL);
+        var timer = $interval(function() {
+          vm.loadProjects(null, true)
+        }, AppConfig.UPDATE_INTERVAL);
         $scope.$on('$destroy', function() {
           // console.log('destroying project list timer');
 

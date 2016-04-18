@@ -136,12 +136,12 @@
           vm.commentForm.$setUntouched();
         };
 
-        vm.loadComments = function(params) {
+        vm.loadComments = function(params, ignoreLoadingBar) {
           params = params || {};
           params = angular.extend({}, vm.query, params);
           params.issueId = vm.issue.id;
 
-          vm.promise = CommentService.all(params)
+          vm.promise = CommentService.all(params, ignoreLoadingBar)
             .then(function (response) {
               vm.comments = response.data;
 
@@ -225,7 +225,11 @@
         vm.init();
 
 
-        var timer = $interval(vm.loadComments, AppConfig.UPDATE_INTERVAL);
+        var timer = $interval(function() {
+          if ($state.current.name == 'app.issue-detail') {
+            vm.loadComments(null, true);
+          }
+        }, AppConfig.UPDATE_INTERVAL);
         $scope.$on('$destroy', function() {
           // console.log('destroying comments timer');
           

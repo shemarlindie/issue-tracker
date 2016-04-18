@@ -16,9 +16,9 @@
               });
           },
 
-          all: function (options) {
+          all: function (options, ignoreLoadingBar) {
             options = options || {};
-            return $http.get(API_URI + '/issues?' + $.param(options));
+            return $http.get(API_URI + '/issues?' + $.param(options), {ignoreLoadingBar: ignoreLoadingBar});
           },
 
           create: function (issue) {

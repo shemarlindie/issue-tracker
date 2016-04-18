@@ -5,7 +5,7 @@
   angular.module('app')
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
       function ($stateProvider, $urlRouterProvider, $locationProvider) {
-        $locationProvider.html5Mode(true);
+        // $locationProvider.html5Mode(true);
 
         $stateProvider
           .state('app', {
@@ -15,7 +15,7 @@
             resolve: {
               auth: ['SecurityService',
                 function (SecurityService) {
-                  console.log('refreshing user..');
+                  // console.log('refreshing user..');
                   
                   return SecurityService.refreshUser();
                 }]
@@ -157,7 +157,7 @@
 
       $rootScope.$on('$stateChangeStart',
         function (event, toState, toParams, fromState, fromParams, options) {
-          console.log('changing state...');
+          // console.log('changing state...');
 
           var permissions = toState.data ? toState.data.permissions : undefined;
 

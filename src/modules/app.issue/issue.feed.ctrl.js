@@ -50,13 +50,13 @@
           vm.loadIssues();
         };
 
-        vm.loadIssues = function(params) {
+        vm.loadIssues = function(params, ignoreLoadingBar) {
           params = params || {};
           params = angular.extend({}, vm.query, params);
           params = angular.extend(params, vm.filters);
           params.projectId = $stateParams.id;
 
-          vm.promise = IssueService.all(params)
+          vm.promise = IssueService.all(params, ignoreLoadingBar)
             .then(function (response) {
               vm.issues = response.data;
 
@@ -86,7 +86,9 @@
 
         vm.init();
 
-        var timer = $interval(vm.loadIssues, AppConfig.UPDATE_INTERVAL);
+        var timer = $interval(function() {
+          vm.loadIssues(null, true);
+        }, AppConfig.UPDATE_INTERVAL);
         $scope.$on('$destroy', function() {
           // console.log('destroying issue list timer');
 

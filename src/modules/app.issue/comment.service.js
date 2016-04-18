@@ -11,9 +11,9 @@
             return $http.get(API_URI + '/comments/' + id);
           },
 
-          all: function (options) {
+          all: function (options, ignoreLoadingBar) {
             options = options || {};
-            return $http.get(API_URI + '/comments?' + $.param(options));
+            return $http.get(API_URI + '/comments?' + $.param(options), {ignoreLoadingBar: ignoreLoadingBar});
           },
 
           create: function (comment) {

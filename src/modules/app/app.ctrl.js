@@ -52,7 +52,7 @@
         };
 
         vm.loadProjects = function() {
-          ProjectService.all()
+          ProjectService.all(null, true)
             .then(function (response) {
               vm.sidenav.sections[0].children = response.data.list;
             })

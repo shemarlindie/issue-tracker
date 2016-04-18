@@ -53,9 +53,11 @@
 
                 return response;
               })
-              .catch(function() {
-                // not authenticated
-                service.clearUserData();
+              .catch(function(response) {
+                if (response.status == 401) {
+                  // not authenticated
+                  service.clearUserData();
+                }
               });
           },
 
