@@ -1,62 +1,77 @@
 <div ng-controller="IssueFeedCtrl as vm">
+
+
   <md-subheader class="inherit-line-height b-b md-no-sticky">
     <div ng-controller="ProjectCtrl as vm">
-      <div layout="row" layout-align="start center" layout-wrap>
-        <h2 ng-bind="vm.project.name"></h2>
-        <md-button class="button-link" ui-sref="app.project-edit({id:vm.project.id})">Edit</md-button>
-        <md-button ng-click="vm.delete()" class="button-link">Delete</md-button>
-        <span flex></span>
-        <div>
-          <md-button ui-sref="app.issue-create({project:vm.project.id})" class="md-raised md-primary">
-            <md-icon>add</md-icon> Issue</md-button>
-        </div>
+      <div ng-if="!vm.project.id" layout="row" layout-align="center center">
+        <md-progress-circular md-mode="indeterminate" md-diameter="50"></md-progress-circular>
       </div>
-      <div>
-        <p ng-if="vm.project.description" ng-bind="vm.project.description"></p>
+      <div class="animate-fade" ng-if="vm.project.id">
+        <div layout="row" layout-align="start center" layout-wrap>
+          <h2 ng-bind="vm.project.name"></h2>
+          <md-button class="button-link" ui-sref="app.project-edit({id:vm.project.id})">Edit</md-button>
+          <md-button ng-click="vm.delete()" class="button-link">Delete</md-button>
+          <span flex></span>
+          <div>
+            <md-button ui-sref="app.issue-create({project:vm.project.id})" class="md-raised md-primary">
+              <md-icon>add</md-icon>
+              Issue
+            </md-button>
+          </div>
+        </div>
+        <div>
+          <p ng-if="vm.project.description" ng-bind="vm.project.description"></p>
+        </div>
       </div>
     </div>
 
     <div layout="row" layout-xs="column" layout-wrap>
-      <h4 class="m-r-lg"><a href ng-click="vm.resetFilters() && vm.loadIssues()"><md-icon>close</md-icon></a> Filters:</h4>
-      <div class="filter-list" layout="row" layout-align="start center" layout-align-xs="center center" layout-wrap flex>
+      <h4 class="m-r-lg">
+        <md-button ng-disabled="!vm.issues.page" class="md-icon-button no-margin" ng-click="vm.resetFilters() && vm.loadIssues()">
+          <md-icon>close</md-icon>
+        </md-button>
+        Filters:
+      </h4>
+      <div class="filter-list" layout="row" layout-align="start center" layout-align-xs="center center" layout-wrap
+           flex>
         <md-input-container class="m-sm">
           <label>Assigned to</label>
-          <md-select ng-change="vm.loadIssues()" ng-model="vm.filters.assignedToId">
+          <md-select ng-disabled="!vm.issues.page" ng-change="vm.loadIssues()" ng-model="vm.filters.assignedToId">
             <md-option ng-value="undefined">Anyone</md-option>
             <md-option ng-repeat="u in vm.users" ng-value="u.id">{{ u.id == vm.me.id ? 'Me' : u.full_name }}</md-option>
           </md-select>
         </md-input-container>
         <md-input-container class="m-sm">
           <label>Type</label>
-          <md-select ng-change="vm.loadIssues()" ng-model="vm.filters.typeId">
+          <md-select ng-disabled="!vm.issues.page" ng-change="vm.loadIssues()" ng-model="vm.filters.typeId">
             <md-option ng-value="undefined">Any</md-option>
             <md-option ng-repeat="type in vm.typeList" ng-value="type.id">{{type.name}}</md-option>
           </md-select>
         </md-input-container>
         <md-input-container class="m-sm">
           <label>Status</label>
-          <md-select ng-change="vm.loadIssues()" ng-model="vm.filters.statusId" >
+          <md-select ng-disabled="!vm.issues.page" ng-change="vm.loadIssues()" ng-model="vm.filters.statusId">
             <md-option ng-value="undefined">Any</md-option>
             <md-option ng-repeat="status in vm.statusList" ng-value="status.id">{{status.name}}</md-option>
           </md-select>
         </md-input-container>
         <md-input-container class="m-sm">
           <label>Priority</label>
-          <md-select ng-change="vm.loadIssues()" ng-model="vm.filters.priorityId">
+          <md-select ng-disabled="!vm.issues.page" ng-change="vm.loadIssues()" ng-model="vm.filters.priorityId">
             <md-option ng-value="undefined">Any</md-option>
             <md-option ng-repeat="priority in vm.priorityList" ng-value="priority.id">{{priority.name}}</md-option>
           </md-select>
         </md-input-container>
         <md-input-container class="m-sm">
           <label>Sort by</label>
-          <md-select ng-change="vm.loadIssues()" ng-model="vm.filters.sortBy">
+          <md-select ng-disabled="!vm.issues.page" ng-change="vm.loadIssues()" ng-model="vm.filters.sortBy">
             <md-option ng-value="'dateUpdated'">Updated</md-option>
             <md-option ng-value="'priority'">Priority</md-option>
           </md-select>
         </md-input-container>
         <md-input-container class="m-sm">
           <label>Sort Order</label>
-          <md-select ng-change="vm.loadIssues()" ng-model="vm.filters.sortOrder">
+          <md-select ng-disabled="!vm.issues.page" ng-change="vm.loadIssues()" ng-model="vm.filters.sortOrder">
             <md-option ng-value="'ASC'">ASC</md-option>
             <md-option ng-value="'DESC'">DESC</md-option>
           </md-select>
@@ -69,10 +84,10 @@
     <div ng-if="!vm.issues.page">
       <md-progress-circular md-mode="indeterminate" md-diameter="50"></md-progress-circular>
     </div>
-    <div class="text-muted p" ng-if="vm.issues.page && vm.issues.list.length == 0">No issues.</div>
+    <div class="text-muted p animate-fade" ng-if="vm.issues.page && vm.issues.list.length == 0">No issues.</div>
   </div>
 
-  <md-content ng-if="vm.issues.list.length > 0" class="issue-list-wrapper m-v">
+  <md-content ng-if="vm.issues.list.length > 0" class="issue-list-wrapper m-v animate-fade">
     <ng-include src="'modules/app.issue/views/issue-list.tpl.html'"></ng-include>
   </md-content>
 
