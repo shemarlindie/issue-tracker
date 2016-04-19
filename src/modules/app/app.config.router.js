@@ -45,7 +45,7 @@
             }
           })
           .state('app.project-detail', {
-            url: '^/project/:id',
+            url: '^/project/{id:[0-9]+}',
             views: {
               'page@app': {
                 templateUrl: 'modules/app.project/views/project.detail.html'
@@ -53,7 +53,7 @@
             }
           })
           .state('app.project-edit', {
-            url: '^/project/:id/edit',
+            url: '^/project/{id:[0-9]+}/edit',
             views: {
               'page@app': {
                 templateUrl: 'modules/app.project/views/project.edit.html'
@@ -77,7 +77,7 @@
             }
           })
           .state('app.issue-edit', {
-            url: '^/issue/:id/edit',
+            url: '^/issue/{id:[0-9]+}/edit',
             views: {
               'page@app': {
                 templateUrl: 'modules/app.issue/views/issue.edit.html'

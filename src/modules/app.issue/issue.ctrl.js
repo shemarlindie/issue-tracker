@@ -43,7 +43,10 @@
             IssueService.get(vm.editing)
               .then(function (response) {
                 vm.issue = response.data;
-                vm.loadComments();
+
+                if ($state.current.name == 'app.issue-detail') {
+                  vm.loadComments();
+                }
                 console.log('issue details', vm.issue);
               });
           }
