@@ -69,7 +69,7 @@
             }
           })
           .state('app.issue-detail', {
-            url: '^/issue/:id',
+            url: '^/issue/{id:[0-9]+}',
             views: {
               'page@app': {
                 templateUrl: 'modules/app.issue/views/issue.detail.html'
