@@ -87,8 +87,8 @@
     <div class="text-muted p animate-fade" ng-if="vm.issues.page && vm.issues.list.length == 0">No issues.</div>
   </div>
 
-  <md-content ng-if="vm.issues.list.length > 0" class="issue-list-wrapper m-v animate-fade">
-    <ng-include src="'modules/app.issue/views/issue-list.tpl.html'"></ng-include>
+  <md-content ng-if="vm.issues.list.length > 0" class="issue-list-wrapper m-v">
+    <div class="animate-fade" ng-include="'modules/app.issue/views/issue-list.tpl.html'"></div>
   </md-content>
 
 </div>
