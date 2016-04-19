@@ -4,11 +4,12 @@
 
   // MODULE DEFINITION
   angular.module('app.project')
-    .controller('ProjectListCtrl', ['$scope', '$state', 'AppConfig', 'ProjectService', 'TagService', '$stateParams', '$interval',
-      function ($scope, $state, AppConfig, ProjectService, TagService, $stateParams, $interval) {
+    .controller('ProjectListCtrl', ['$scope', '$state', 'AppConfig', 'ProjectService', 'TagService', '$stateParams', '$interval', '$timeout',
+      function ($scope, $state, AppConfig, ProjectService, TagService, $stateParams, $interval, $timeout) {
         var vm = this;
 
         vm.init = function () {
+          vm.showProjectList = false;
           vm.query = {
             pageSize: 10,
             page: 1,
@@ -37,6 +38,12 @@
               vm.query.total = vm.projects.page.totalCount;
               vm.query.page = vm.projects.page.current;
               vm.query.limit = vm.projects.page.numItemsPerPage;
+
+              if (!vm.showProjectList) {
+                $timeout(function () {
+                  vm.showProjectList = true;
+                });
+              }
 
               // console.log('projects', vm.projects);
 
