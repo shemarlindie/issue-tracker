@@ -136,6 +136,12 @@
           vm.commentForm.$setUntouched();
         };
 
+        vm.onPaginate = function() {
+          // console.log('paginate comments');
+          
+          vm.loadComments();
+        };
+
         vm.loadComments = function(params, ignoreLoadingBar) {
           params = params || {};
           params = angular.extend({}, vm.query, params);
