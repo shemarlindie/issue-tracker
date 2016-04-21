@@ -80,17 +80,19 @@
 
           vm.testerSearch = {
             search: function (text) {
-              return UserService.search(text).then(function (response) {
-                return response.data.list;
-              });
+              return UserService.search(text, vm.issue.project ? vm.issue.project.collaborators: null)
+                .then(function (response) {
+                  return response.data.list;
+                });
             }
           };
 
           vm.fixerSearch = {
             search: function (text) {
-              return UserService.search(text).then(function (response) {
-                return response.data.list;
-              });
+              return UserService.search(text, vm.issue.project ? vm.issue.project.collaborators: null)
+                .then(function (response) {
+                  return response.data.list;
+                });
             }
           };
 
@@ -139,13 +141,13 @@
           vm.commentForm.$setUntouched();
         };
 
-        vm.onPaginate = function() {
+        vm.onPaginate = function () {
           // console.log('paginate comments');
-          
+
           vm.loadComments();
         };
 
-        vm.loadComments = function(params, ignoreLoadingBar) {
+        vm.loadComments = function (params, ignoreLoadingBar) {
           params = params || {};
           params = angular.extend({}, vm.query, params);
           params.issueId = vm.issue.id;
@@ -234,14 +236,14 @@
         vm.init();
 
 
-        var timer = $interval(function() {
+        var timer = $interval(function () {
           if ($state.current.name == 'app.issue-detail') {
             vm.loadComments(null, true);
           }
         }, AppConfig.UPDATE_INTERVAL);
-        $scope.$on('$destroy', function() {
+        $scope.$on('$destroy', function () {
           // console.log('destroying comments timer');
-          
+
           $interval.cancel(timer);
         });
       }])

@@ -13,7 +13,6 @@
         vm.typeList = [];
         vm.statusList = [];
         vm.priorityList = [];
-        vm.users = [];
         vm.issues = {};
 
         vm.query = {
@@ -36,11 +35,6 @@
           IssueService.priorities().then(function (response) {
             vm.priorityList = response.data;
           });
-
-          UserService.all({pageSize: 20})
-            .then(function (response) {
-              vm.users = response.data.list;
-            });
 
           vm.resetFilters();
           vm.loadIssues();

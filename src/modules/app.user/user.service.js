@@ -2,8 +2,8 @@
   'use strict';
 
   angular.module('app.user')
-    .factory('UserService', ['AppConfig', 'SecurityService', '$http', 'FileUploader',
-      function (AppConfig, SecurityService, $http, FileUploader) {
+    .factory('UserService', ['AppConfig', 'SecurityService', '$http', '$q', 'FileUploader',
+      function (AppConfig, SecurityService, $http, $q, FileUploader) {
         var API_URI = AppConfig.API_URI;
 
         var service = {
@@ -27,7 +27,23 @@
             return $http.delete(API_URI + '/users/' + user.id);
           },
 
-          search: function(text) {
+          search: function (text, list) {
+            if (list instanceof Array) {
+              text = text.toLowerCase();
+
+              return $q.when({
+                data: {
+                  list: list.filter(function (u) {
+                    // concatenate search terms
+                    var subject = (u.first_name + u.last_name + u.email).toLowerCase();
+
+                    // check for search text
+                    return subject.indexOf(text) >= 0;
+                  })
+                }
+              });
+            }
+
             return $http.get(API_URI + '/users/search?query=' + encodeURIComponent(text));
           },
 

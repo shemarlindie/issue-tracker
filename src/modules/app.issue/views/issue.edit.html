@@ -45,6 +45,7 @@
                                md-items="user in vm.testerSearch.search(vm.testerSearch.searchText)"
                                md-item-text="user.email"
                                md-autoselect="true"
+                               md-no-cache="true"
                                placeholder="Testers">
                 <small md-highlight-text="vm.testerSearch.searchText">{{user.first_name}} :: {{ user.email }}</small>
               </md-autocomplete>
@@ -61,6 +62,7 @@
                                md-selected-item="vm.fixerSearch.selectedItem"
                                md-search-text="vm.fixerSearch.searchText"
                                md-items="user in vm.fixerSearch.search(vm.fixerSearch.searchText)"
+                               md-no-cache="true"
                                md-item-text="user.email" placeholder="Fixers">
                 <small md-highlight-text="vm.fixerSearch.searchText">{{user.first_name}} :: {{ user.email }}</small>
               </md-autocomplete>

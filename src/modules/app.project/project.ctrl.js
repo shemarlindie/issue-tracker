@@ -17,6 +17,9 @@
             ProjectService.get(vm.editing)
               .then(function (response) {
                 vm.project = response.data;
+
+                // set project in parent scope: issue feed ctrl
+                $scope.$parent.project = vm.project;
               });
           }
           else {

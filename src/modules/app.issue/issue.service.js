@@ -2,11 +2,17 @@
   "use strict";
 
   angular.module('app.issue')
-    .factory('IssueService', ['AppConfig', '$http',
-      function (AppConfig, $http) {
+    .factory('IssueService', ['AppConfig', '$http', '$q',
+      function (AppConfig, $http, $q) {
         var API_URI = AppConfig.API_URI;
 
         var service = {
+          CACHE: {
+            types: undefined,
+            statuses: undefined,
+            priorities: undefined
+          },
+
           get: function (id) {
             return $http.get(API_URI + '/issues/' + id)
               .then(function (response) {
@@ -33,19 +39,46 @@
             return $http.delete(API_URI + '/issues/' + issue.id);
           },
 
-          types: function() {
-            return $http.get(API_URI + '/issues/types');
+          types: function () {
+            if (!service.CACHE.types) {
+              return $http.get(API_URI + '/issues/types')
+                .then(function (response) {
+                  service.CACHE.types = response.data;
+
+                  return response;
+                });
+            }
+
+            return $q.when({data: service.CACHE.types});
           },
 
-          priorities: function() {
-            return $http.get(API_URI + '/issues/priorities');
+          priorities: function () {
+            if (!service.CACHE.priorities) {
+              return $http.get(API_URI + '/issues/priorities')
+                .then(function (response) {
+                  service.CACHE.priorities = response.data;
+
+                  return response;
+                });
+            }
+
+            return $q.when({data: service.CACHE.priorities});
           },
 
-          statuses: function() {
-            return $http.get(API_URI + '/issues/statuses');
+          statuses: function () {
+            if (!service.CACHE.statuses) {
+              return $http.get(API_URI + '/issues/statuses')
+                .then(function (response) {
+                  service.CACHE.statuses = response.data;
+
+                  return response;
+                });
+            }
+
+            return $q.when({data: service.CACHE.statuses});
           },
 
-          serialize: function(issue) {
+          serialize: function (issue) {
             issue = angular.copy(issue);
 
             issue.project_id = issue.project.id;
