@@ -35,7 +35,7 @@
                 data: {
                   list: list.filter(function (u) {
                     // concatenate search terms
-                    var subject = (u.first_name + u.last_name + u.email).toLowerCase();
+                    var subject = (u.full_name + u.username + u.email).toLowerCase();
 
                     // check for search text
                     return subject.indexOf(text) >= 0;
