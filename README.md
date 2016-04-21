@@ -15,7 +15,7 @@
 To install dev dependencies: 
 > npm install
 
-To install app dependencies **(run in the "src/" folder)**:
+To install app dependencies:
 > bower install
 
 #### BUILD PROCESS ####
