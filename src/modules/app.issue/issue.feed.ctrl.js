@@ -80,7 +80,7 @@
             vm.filters = JSON.parse(localStorage.filterCache);
           }
           else {
-            resetFilters();
+            vm.resetFilters();
           }
         };
 
