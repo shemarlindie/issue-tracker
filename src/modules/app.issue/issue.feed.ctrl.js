@@ -9,6 +9,14 @@
       function ($scope, $stateParams, $state, AppConfig, SecurityService, IssueService,
                 UserService, ProjectService, $interval) {
         var vm = this;
+        var FILTER_DEFAULTS = {
+          assignedToId: undefined,
+          typeId: undefined,
+          statusId: undefined,
+          priorityId: undefined,
+          sortBy: 'dateUpdated',
+          sortOrder: 'DESC'
+        };
 
         vm.typeList = [];
         vm.statusList = [];
@@ -36,7 +44,7 @@
             vm.priorityList = response.data;
           });
 
-          vm.resetFilters();
+          vm.loadFilters();
           vm.loadIssues();
         };
 
@@ -67,15 +75,33 @@
             });
         };
 
-        vm.resetFilters = function () {
-          return vm.filters = {
-            assignedToId: undefined,
-            typeId: undefined,
-            statusId: undefined,
-            priorityId: undefined,
-            sortBy: 'dateUpdated',
-            sortOrder: 'DESC'
+        vm.loadFilters = function () {
+          if (localStorage.filterCache) {
+            vm.filters = JSON.parse(localStorage.filterCache);
           }
+          else {
+            resetFilters();
+          }
+        };
+
+        vm.resetFilters = function () {
+          vm.filters = FILTER_DEFAULTS;
+
+          vm.onFiltersChanged();
+
+          return vm.filters;
+        };
+
+        vm.onFiltersChanged = function() {
+          localStorage.filterCache = JSON.stringify(vm.filters);
+          vm.loadIssues();
+        };
+
+        vm.isListFiltered = function() {
+          return vm.filters.assignedToId ||
+              vm.filters.priorityId ||
+              vm.filters.statusId ||
+              vm.filters.typeId;
         };
 
         vm.init();
