@@ -1,0 +1,8 @@
+# cache control
+<filesMatch "\.(js|css)$">
+  FileETag None
+  <ifModule mod_headers.c>
+     Header unset ETag
+     Header set Cache-Control "max-age=300"
+  </ifModule>
+</filesMatch>

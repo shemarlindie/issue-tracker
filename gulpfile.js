@@ -40,6 +40,7 @@ var COPY_FILES = [
   './src/browserconfig.xml',
   './src/manifest.json',
   './src/favicon.ico',
+  './src/.htaccess',
   './src/index.html'
 ];
 
