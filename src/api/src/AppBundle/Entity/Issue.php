@@ -214,10 +214,10 @@ class Issue extends Entity {
   /**
    * @var string
    *
-   * @ORM\Column(name="description", type="string", length=500, nullable=true)
+   * @ORM\Column(name="description", type="string", length=10000, nullable=true)
    *
    * @Assert\NotBlank()
-   * @Assert\Length(max="500")
+   * @Assert\Length(max="10000")
    */
   private $description;
 
