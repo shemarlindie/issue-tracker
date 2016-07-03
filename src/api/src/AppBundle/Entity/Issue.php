@@ -216,7 +216,6 @@ class Issue extends Entity {
    *
    * @ORM\Column(name="description", type="string", length=10000, nullable=true)
    *
-   * @Assert\NotBlank()
    * @Assert\Length(max="10000")
    */
   private $description;
