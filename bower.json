@@ -17,22 +17,25 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "^1.5.4",
+    "angular": "^1.5.11",
     "angular-material": "1.0.4",
     "angular-ui-router": "ui-router#^0.2.18",
     "angular-moment": "1.0.0-beta.3",
     "moment": "~2.10.6",
     "animate.css": "~3.4.0",
-    "angular-sanitize": "~1.4.8",
+    "angular-sanitize": "~1.5.11",
     "jquery": "~2.1.4",
     "angular-marked": "~1.0.1",
     "angular-loading-bar": "~0.8.0",
-    "angular-touch": "~1.4.8",
+    "angular-touch": "~1.5.11",
     "a0-angular-storage": "^0.0.14",
     "angular-material-data-table": "^0.10.5",
     "angular-cache-buster": "^0.4.3",
     "angular-file-upload": "^2.2.0",
     "angular-masonry": "^0.16.0",
     "highlight.js": "isagalaev/highlight.js#^9.4.0"
+  },
+  "resolutions": {
+    "angular": "1.5.11"
   }
 }
