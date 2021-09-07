@@ -4,8 +4,8 @@
     <p><b>Select a project to manage issues.</b></p>
   </md-subheader>
   <md-content>
-    <md-table-pagination class="b-b" md-limit="vm.query.pageSize" md-limit-options="[1, 5, 10, 15]" md-page="vm.query.page"
-                         md-total="{{vm.query.total}}"
+    <md-table-pagination class="b-b" md-limit="vm.query.limit" md-limit-options="[1, 5, 10, 15]" md-page="vm.query.page"
+                         md-total="{{vm.projects.count}}"
                          md-on-paginate="vm.onPaginate"
                          md-label="{rowsPerPage: 'Projects per page:'}"
                          md-page-select>
@@ -13,15 +13,15 @@
   </md-content>
 
   <div layout="column" layout-align="center center">
-    <div ng-if="!vm.projects.page">
+    <div ng-if="!vm.projects.results">
       <md-progress-circular md-mode="indeterminate" md-diameter="50"></md-progress-circular>
     </div>
-    <div class="text-muted p animate-fade" ng-if="vm.projects.page && vm.projects.list.length == 0">No projects.</div>
+    <div class="text-muted p animate-fade" ng-if="vm.projects.results && vm.projects.results.length == 0">No projects.</div>
   </div>
 
-  <div class="animate-fade" ng-if="vm.projects.list.length">
+  <div class="animate-fade" ng-if="vm.projects.results.length">
     <div class="m-xs project-list" masonry reload-on-resize>
-      <div ng-repeat="proj in vm.projects.list track by proj.id" class="project-card masonry-brick">
+      <div ng-repeat="proj in vm.projects.results track by proj.id" class="project-card masonry-brick">
         <md-card>
           <a ui-sref="app.project-detail({id:proj.id})">
             <md-toolbar>
@@ -49,15 +49,15 @@
           <md-card-footer layout="row" layout-align="end end">
             <span ng-if="proj.date_due" class="text-sm text-muted">Due {{proj.date_due | date:'mediumDate'}}</span>
             <span flex=""></span>
-            <span class="text-sm text-muted">{{proj.issue_count}} Issues</span>
+            <span class="text-sm text-muted">{{proj.issue_count || 'No'}} Issues</span>
           </md-card-footer>
         </md-card>
       </div>
     </div>
 
     <md-content hide-gt-xs>
-      <md-table-pagination class="b-b" md-limit="vm.query.pageSize" md-limit-options="[1, 5, 10, 15]" md-page="vm.query.page"
-                           md-total="{{vm.query.total}}"
+      <md-table-pagination class="b-b" md-limit="vm.query.limit" md-limit-options="[1, 5, 10, 15]" md-page="vm.query.page"
+                           md-total="{{vm.projects.count}}"
                            md-on-paginate="vm.onPaginate"
                            md-label="{rowsPerPage: 'Projects per page:'}"
                            md-page-select>

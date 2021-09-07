@@ -54,7 +54,7 @@
         vm.loadProjects = function() {
           ProjectService.all(null, true)
             .then(function (response) {
-              vm.sidenav.sections[0].children = response.data.list;
+              vm.sidenav.sections[0].children = response.data.results;
             })
             .catch(function (response) {
               console.error('error loading sidenav projects', response);

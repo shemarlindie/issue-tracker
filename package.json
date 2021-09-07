@@ -1,5 +1,5 @@
 {
-  "name": "V75-Issue-Tracker",
+  "name": "Issue-Tracker",
   "version": "1.0.0",
   "description": "Project management and issue tracking.",
   "main": "",
@@ -23,9 +23,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:shemarcl/v75-issue-tracker.git"
+    "url": "git@github.com:shemarlindie/issue-tracker.git"
   },
   "author": "",
   "license": "",
-  "homepage": "https://bitbucket.org/shemarcl/v75-issue-tracker#readme"
+  "homepage": "https://github.com/shemarlindie/issue-tracker"
 }

@@ -5,7 +5,7 @@
     .factory('AppConfig', function () {
       var service = {
         // API_URI: '/api/web',
-        API_URI: 'http://issue-tracker.version75.com/api/web',
+        API_URI: 'http://localhost:8000/api',
         // API_URI: 'http://localhost:8000',
         UPDATE_INTERVAL: 10000
       };
@@ -22,7 +22,10 @@
           },
 
           login: function (data) {
-            return $http.post(API_URI + '/auth/login_check', data)
+            var headers = {
+              'Authorization': 'Basic ' + btoa(data.username + ':' + data.password)
+            }
+            return $http.post(API_URI + '/auth/login/', data, {headers: headers})
               .then(function (response) {
                 service.setAuthData(response.data);
 
@@ -31,12 +34,10 @@
           },
 
           logout: function () {
-            var q = $q.defer();
-
-            service.clearUserData();
-            q.resolve();
-
-            return q.promise;
+            return $http.post(API_URI + '/auth/logout/', {})
+                .finally(function () {
+                  service.clearUserData();
+                })
           },
 
           setAuthData: function (data) {
@@ -46,7 +47,7 @@
           },
 
           authCheck: function () {
-            return $http.post(API_URI + '/auth/auth_check', {})
+            return $http.get(API_URI + '/auth/check/', {})
               .then(function (response) {
                 // update local user data
                 service.setUser(response.data);
@@ -106,23 +107,11 @@
             var access = false;
             switch (permission) {
               case 'superadmin':
-                access = user.user_type === 'ROLE_SUPER_ADMIN';
-                break;
-
-              case 'admin':
-                access = ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'].indexOf(user.user_type) !== -1;
+                access = user.is_superuser;
                 break;
 
               case 'staff':
-                access = ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_STAFF'].indexOf(user.user_type) !== -1;
-                break;
-
-              case 'provider':
-                access = ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_STAFF', 'ROLE_PROVIDER'].indexOf(user.user_type) !== -1;
-                break;
-
-              case 'customer':
-                access = ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_STAFF', 'ROLE_PROVIDER', 'ROLE_CUSTOMER'].indexOf(user.user_type) !== -1;
+                access = user.is_staff;
                 break;
             }
 
@@ -130,7 +119,20 @@
           },
 
           userTypeIs: function(role) {
-            return service.getUser() && service.getUser().user_type === role;
+            var user = service.getUser()
+            if (user) {
+              if (role == 'superadmin') {
+                return user.is_super_user
+              }
+              else if (role == 'staff') {
+                return user.is_staff
+              }
+              else {
+                return true
+              }
+            }
+
+            return false;
           }
         };
 

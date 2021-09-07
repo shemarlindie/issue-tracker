@@ -23,7 +23,7 @@
       var formatter = function (users, separator) {
         if (users) {
           return users.map(function (user) {
-            return user.first_name + ' ' + user.last_name;
+            return user.full_name || user.username;
           }).join(separator)
         }
         else {

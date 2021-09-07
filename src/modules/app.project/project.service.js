@@ -8,7 +8,7 @@
 
         var service = {
           get: function (id) {
-            return $http.get(API_URI + '/projects/' + id)
+            return $http.get(API_URI + '/projects/' + id + '/')
               .then(function (response) {
                 response.data = service.unserialize(response.data);
 
@@ -18,30 +18,31 @@
 
           all: function (options, ignoreLoadingBar) {
             options = options || {};
-            return $http.get(API_URI + '/projects?' + $.param(options), {ignoreLoadingBar: ignoreLoadingBar});
+            return $http.get(API_URI + '/projects/?' + $.param(options), {ignoreLoadingBar: ignoreLoadingBar});
           },
 
           create: function (project) {
-            return $http.post(API_URI + '/projects', service.serialize(project));
+            return $http.post(API_URI + '/projects' + '/', service.serialize(project));
           },
 
           update: function (project) {
-            return $http.patch(API_URI + '/projects/' + project.id, service.serialize(project));
+            return $http.patch(API_URI + '/projects/' + project.id + '/', service.serialize(project));
           },
 
           delete: function (project) {
-            return $http.delete(API_URI + '/projects/' + project.id);
+            return $http.delete(API_URI + '/projects/' + project.id + '/');
           },
 
           search: function (text) {
-            return $http.get(API_URI + '/projects/search?query=' + encodeURIComponent(text));
+            return $http.get(API_URI + '/projects/?search=' + encodeURIComponent(text));
           },
 
           serialize: function (project) {
             project = angular.copy(project);
-            project.collaborators = project.collaborators.map(function (user) {
+            project.collaborators_ids = project.collaborators.map(function (user) {
               return user.id;
             });
+            delete project.collaborators
 
             return project;
           },

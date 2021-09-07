@@ -10,13 +10,14 @@
                 UserService, ProjectService, $interval) {
         var vm = this;
         var FILTER_DEFAULTS = {
-          assignedToId: undefined,
-          typeId: undefined,
-          statusId: undefined,
-          priorityId: undefined,
-          sortBy: 'dateUpdated',
-          sortOrder: 'DESC'
+          fixers: undefined,
+          type: undefined,
+          status: undefined,
+          priority: undefined,
+          sort_by: 'date_created',
+          sort_order: '-'
         };
+        vm.filters = {}
 
         vm.typeList = [];
         vm.statusList = [];
@@ -24,24 +25,23 @@
         vm.issues = {};
 
         vm.query = {
-          pageSize: 10,
-          page: 1,
-          total: 0
+          limit: 10,
+          page: 1
         };
 
         vm.me = SecurityService.getUser();
 
         vm.init = function () {
           IssueService.types().then(function (response) {
-            vm.typeList = response.data;
+            vm.typeList = response.data.results;
           });
 
           IssueService.statuses().then(function (response) {
-            vm.statusList = response.data;
+            vm.statusList = response.data.results;
           });
 
           IssueService.priorities().then(function (response) {
-            vm.priorityList = response.data;
+            vm.priorityList = response.data.results;
           });
 
           vm.loadFilters();
@@ -56,15 +56,27 @@
           params = params || {};
           params = angular.extend({}, vm.query, params);
           params = angular.extend(params, vm.filters);
-          params.projectId = $stateParams.id;
+          if (params.sort_by) {
+            params.ordering = params.sort_by
+
+            if (params.sort_order) {
+              params.ordering = params.sort_order + params.ordering
+            }
+          }
+          delete params.sort_by
+          delete params.sort_order
+          // remove empty filter params
+          for (var k in params) {
+            if (!params[k]) {
+              delete params[k]
+            }
+          }
+
+          params.project = $stateParams.id;
 
           vm.promise = IssueService.all(params, ignoreLoadingBar)
             .then(function (response) {
               vm.issues = response.data;
-
-              vm.query.total = vm.issues.page.totalCount;
-              vm.query.page = vm.issues.page.current;
-              vm.query.limit = vm.issues.page.numItemsPerPage;
 
               // console.log('issues', vm.issues);
 
@@ -85,7 +97,7 @@
         };
 
         vm.resetFilters = function () {
-          vm.filters = FILTER_DEFAULTS;
+          angular.extend(vm.filters, FILTER_DEFAULTS);
 
           vm.onFiltersChanged();
 
@@ -98,10 +110,10 @@
         };
 
         vm.isListFiltered = function() {
-          return vm.filters.assignedToId ||
-              vm.filters.priorityId ||
-              vm.filters.statusId ||
-              vm.filters.typeId;
+          return vm.filters.fixers ||
+              vm.filters.priority ||
+              vm.filters.status ||
+              vm.filters.type;
         };
 
         vm.init();

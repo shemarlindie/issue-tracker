@@ -10,15 +10,13 @@
 
         vm.init = function () {
           vm.query = {
-            pageSize: 10,
-            page: 1,
-            total: 0
+            limit: 10,
+            page: 1
           };
 
           vm.promise = undefined;
 
           vm.projects = {
-            list: []
           };
 
           vm.loadProjects();
@@ -34,10 +32,6 @@
             .then(function (response) {
               vm.projects = response.data;
 
-              vm.query.total = vm.projects.page.totalCount;
-              vm.query.page = vm.projects.page.current;
-              vm.query.limit = vm.projects.page.numItemsPerPage;
-
               // console.log('projects', vm.projects);
 
               return response;
@@ -48,7 +42,7 @@
         };
 
         vm.onPaginate = function () {
-          console.log('onpaginate project list');
+          console.log('onpaginate project list', vm.query);
 
           vm.loadProjects();
         };

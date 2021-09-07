@@ -47,7 +47,7 @@
                                md-autoselect="true"
                                md-no-cache="true"
                                placeholder="Testers">
-                <small md-highlight-text="vm.testerSearch.searchText">{{user.first_name}} :: {{ user.email }}</small>
+                <small md-highlight-text="vm.testerSearch.searchText">{{user.full_name}} :: {{ user.email }}</small>
               </md-autocomplete>
               <md-chip-template>
                 <small>
@@ -64,7 +64,7 @@
                                md-items="user in vm.fixerSearch.search(vm.fixerSearch.searchText)"
                                md-no-cache="true"
                                md-item-text="user.email" placeholder="Fixers">
-                <small md-highlight-text="vm.fixerSearch.searchText">{{user.first_name}} :: {{ user.email }}</small>
+                <small md-highlight-text="vm.fixerSearch.searchText">{{user.full_name}} :: {{ user.email }}</small>
               </md-autocomplete>
               <md-chip-template>
                 <small>
@@ -74,20 +74,21 @@
               </md-chip-template>
             </md-chips>
 
-            <!--<md-chips class="m-t" ng-model="vm.issue.tags" md-autocomplete-snap md-require-match="false">-->
-              <!--<md-autocomplete md-autoselect="true" md-input-minlength="0"-->
-                               <!--md-selected-item="vm.tagSearch.selectedItem"-->
-                               <!--md-search-text="vm.tagSearch.searchText"-->
-                               <!--md-items="tag in vm.tagSearch.search(vm.tagSearch.searchText)"-->
-                               <!--md-item-text="tag" placeholder="Tags">-->
-                <!--<span md-highlight-text="vm.tagSearch.searchText">{{tag.name}}</span>-->
-              <!--</md-autocomplete>-->
-              <!--<md-chip-template>-->
-                <!--<span>-->
-                  <!--<strong>{{$chip.name}}</strong>-->
-                <!--</span>-->
-              <!--</md-chip-template>-->
-            <!--</md-chips>-->
+            <md-chips class="m-t" ng-model="vm.issue.tags" md-autocomplete-snap md-require-match="true">
+              <md-autocomplete md-autoselect="true" md-min-length="0"
+                               md-selected-item="vm.tagSearch.selectedItem"
+                               md-search-text="vm.tagSearch.searchText"
+                               md-items="tag in vm.tagSearch.search(vm.tagSearch.searchText)"
+                               md-item-text="tag"
+                               placeholder="Tags">
+                <span md-highlight-text="vm.tagSearch.searchText">{{tag.name}}</span>
+              </md-autocomplete>
+              <md-chip-template>
+                <span>
+                  <strong>{{$chip.name}}</strong>
+                </span>
+              </md-chip-template>
+            </md-chips>
 
             <div class="m-t" layout="row" layout-wrap>
               <md-input-container>

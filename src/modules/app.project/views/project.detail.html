@@ -27,7 +27,7 @@
 
     <div layout="row" layout-xs="column" layout-wrap>
       <h4 class="m-r-lg">
-        <md-button ng-disabled="!vm.issues.page" class="md-icon-button no-margin" ng-click="vm.resetFilters()">
+        <md-button ng-disabled="!vm.issues.results" class="md-icon-button no-margin" ng-click="vm.resetFilters()">
           <md-icon>close</md-icon>
         </md-button>
         Filters:
@@ -36,44 +36,45 @@
            flex>
         <md-input-container class="m-sm">
           <label>Assigned to</label>
-          <md-select ng-disabled="!vm.issues.page" ng-change="vm.onFiltersChanged()" ng-model="vm.filters.assignedToId">
+          <md-select ng-disabled="!vm.issues.results" ng-change="vm.onFiltersChanged()" ng-model="vm.filters.fixers">
             <md-option ng-value="undefined">Anyone</md-option>
             <md-option ng-repeat="u in project.collaborators" ng-value="u.id">{{ u.id == vm.me.id ? 'Me' : u.full_name }}</md-option>
           </md-select>
         </md-input-container>
         <md-input-container class="m-sm">
           <label>Type</label>
-          <md-select ng-disabled="!vm.issues.page" ng-change="vm.onFiltersChanged()" ng-model="vm.filters.typeId">
+          <md-select ng-disabled="!vm.issues.results" ng-change="vm.onFiltersChanged()" ng-model="vm.filters.type">
             <md-option ng-value="undefined">Any</md-option>
             <md-option ng-repeat="type in vm.typeList" ng-value="type.id">{{type.name}}</md-option>
           </md-select>
         </md-input-container>
         <md-input-container class="m-sm">
           <label>Status</label>
-          <md-select ng-disabled="!vm.issues.page" ng-change="vm.onFiltersChanged()" ng-model="vm.filters.statusId">
+          <md-select ng-disabled="!vm.issues.results" ng-change="vm.onFiltersChanged()" ng-model="vm.filters.status">
             <md-option ng-value="undefined">Any</md-option>
             <md-option ng-repeat="status in vm.statusList" ng-value="status.id">{{status.name}}</md-option>
           </md-select>
         </md-input-container>
         <md-input-container class="m-sm">
           <label>Priority</label>
-          <md-select ng-disabled="!vm.issues.page" ng-change="vm.onFiltersChanged()" ng-model="vm.filters.priorityId">
+          <md-select ng-disabled="!vm.issues.results" ng-change="vm.onFiltersChanged()" ng-model="vm.filters.priority">
             <md-option ng-value="undefined">Any</md-option>
             <md-option ng-repeat="priority in vm.priorityList" ng-value="priority.id">{{priority.name}}</md-option>
           </md-select>
         </md-input-container>
         <md-input-container class="m-sm">
           <label>Sort by</label>
-          <md-select ng-disabled="!vm.issues.page" ng-change="vm.onFiltersChanged()" ng-model="vm.filters.sortBy">
-            <md-option ng-value="'dateUpdated'">Updated</md-option>
+          <md-select ng-disabled="!vm.issues.results" ng-change="vm.onFiltersChanged()" ng-model="vm.filters.sort_by">
+            <md-option ng-value="'date_created'">Created</md-option>
+            <md-option ng-value="'date_updated'">Updated</md-option>
             <md-option ng-value="'priority'">Priority</md-option>
           </md-select>
         </md-input-container>
         <md-input-container class="m-sm">
           <label>Sort Order</label>
-          <md-select ng-disabled="!vm.issues.page" ng-change="vm.onFiltersChanged()" ng-model="vm.filters.sortOrder">
-            <md-option ng-value="'ASC'">ASC</md-option>
-            <md-option ng-value="'DESC'">DESC</md-option>
+          <md-select ng-disabled="!vm.issues.results" ng-change="vm.onFiltersChanged()" ng-model="vm.filters.sort_order">
+            <md-option ng-value="''">ASC</md-option>
+            <md-option ng-value="'-'">DESC</md-option>
           </md-select>
         </md-input-container>
       </div>
@@ -88,13 +89,13 @@
   </md-toolbar>
 
   <div layout="column" layout-align="center center">
-    <div ng-if="!vm.issues.page">
+    <div ng-if="!vm.issues.results">
       <md-progress-circular md-mode="indeterminate" md-diameter="50"></md-progress-circular>
     </div>
-    <div class="text-muted p animate-fade" ng-if="vm.issues.page && vm.issues.list.length == 0">No issues.</div>
+    <div class="text-muted p animate-fade" ng-if="vm.issues.results && vm.issues.results.length == 0">No issues.</div>
   </div>
 
-  <md-content ng-if="vm.issues.list.length > 0" class="issue-list-wrapper m-v">
+  <md-content ng-if="vm.issues.results.length > 0" class="issue-list-wrapper m-v">
     <div class="animate-fade" ng-include="'modules/app.issue/views/issue-list.tpl.html'"></div>
   </md-content>
 

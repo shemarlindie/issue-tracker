@@ -34,7 +34,7 @@
           vm.userSearch = {
             search: function (text) {
               return UserService.search(text).then(function (response) {
-                return response.data.list;
+                return response.data.results;
               });
             }
           };

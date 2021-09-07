@@ -2,7 +2,7 @@
   <md-list-item ng-class="{'b-t': $first}"
                 ui-sref="app.issue-detail({id:issue.id})"
                 class="b-b secondary-button-padding animate-fade"
-                ng-repeat="issue in vm.issues.list track by issue.id">
+                ng-repeat="issue in vm.issues.results track by issue.id">
 
     <div class="m-v" layout="row" layout-align="start center" layout-align-xs="" layout-xs="column" flex>
       <div class="md-list-item-text">
@@ -17,8 +17,8 @@
 
   </md-list-item>
 </md-list>
-<md-table-pagination class="b-b" md-limit="vm.query.pageSize" md-limit-options="[1, 5, 10, 15]" md-page="vm.query.page"
-                     md-total="{{vm.query.total}}"
+<md-table-pagination class="b-b" md-limit="vm.query.limit" md-limit-options="[1, 5, 10, 15]" md-page="vm.query.page"
+                     md-total="{{vm.issues.count}}"
                      md-on-paginate="vm.onPaginate"
                      md-label="{rowsPerPage: 'Issues per page:'}"
                      md-page-select>

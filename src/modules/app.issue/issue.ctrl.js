@@ -19,23 +19,22 @@
 
         vm.init = function () {
           IssueService.types().then(function (response) {
-            vm.typeList = response.data;
+            vm.typeList = response.data.results;
           });
 
           IssueService.statuses().then(function (response) {
-            vm.statusList = response.data;
+            vm.statusList = response.data.results;
           });
 
           IssueService.priorities().then(function (response) {
-            vm.priorityList = response.data;
+            vm.priorityList = response.data.results;
           });
 
           vm.comment = {};
           vm.statusChangeData = {};
           vm.query = {
-            pageSize: 10,
-            page: 1,
-            total: 0
+            limit: 10,
+            page: 1
           };
           vm.promise = undefined;
 
@@ -73,32 +72,35 @@
           vm.projectSearch = {
             search: function (text) {
               return ProjectService.search(text).then(function (response) {
-                return response.data.list;
+                return response.data.results;
               });
             }
           };
 
           vm.testerSearch = {
             search: function (text) {
-              return UserService.search(text, vm.issue.project ? vm.issue.project.collaborators: null)
+              return UserService.search(text)
                 .then(function (response) {
-                  return response.data.list;
+                  return response.data.results;
                 });
             }
           };
 
           vm.fixerSearch = {
             search: function (text) {
-              return UserService.search(text, vm.issue.project ? vm.issue.project.collaborators: null)
+              return UserService.search(text)
                 .then(function (response) {
-                  return response.data.list;
+                  return response.data.results;
                 });
             }
           };
 
           vm.tagSearch = {
-            search: function (value, index, array) {
-              return value.name.toLowerCase().indexOf(vm.tagSearch.searchText.toLowerCase()) >= 0;
+            search: function (text) {
+              return TagService.search(text)
+                  .then(function (response) {
+                    return response.data.results;
+                  });
             }
           };
         };
@@ -150,15 +152,11 @@
         vm.loadComments = function (params, ignoreLoadingBar) {
           params = params || {};
           params = angular.extend({}, vm.query, params);
-          params.issueId = vm.issue.id;
+          params.issue = vm.issue.id;
 
           vm.promise = CommentService.all(params, ignoreLoadingBar)
             .then(function (response) {
               vm.comments = response.data;
-
-              vm.query.total = vm.comments.page.totalCount;
-              vm.query.page = vm.comments.page.current;
-              vm.query.limit = vm.comments.page.numItemsPerPage;
 
               // console.log('comments', vm.comments);
 

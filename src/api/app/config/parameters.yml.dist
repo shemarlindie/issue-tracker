@@ -1,0 +1,27 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    database_host:     127.0.0.1
+    database_port:     ~
+    database_name:     issue_tracker
+    database_user:     root
+    database_password: toor
+    # You should uncomment this if you want use pdo_sqlite
+    # database_path: "%kernel.root_dir%/data.db3"
+
+    mailer_transport: mail
+    mailer_host: mail.shemarlindie.com
+    mailer_user: no-reply@shemarlindie.com
+    mailer_password: <securepass>
+
+    # A secret key that's used to generate certain security-related tokens
+    secret:            e4904a255ff8f1ee2b7d22321fe9a72ec9b44b8e
+
+    jwt_private_key_path: %kernel.root_dir%/../var/jwt/private.pem      # ssh private key path
+    jwt_public_key_path:  %kernel.root_dir%/../var/jwt/public.pem       # ssh public key path
+    jwt_key_pass_phrase:  '<securetokenpass>'                           # ssh key pass phrase
+    jwt_token_ttl:        31536000                                      # 1 year
+
+    app.host: 'https://issue-tracker.shemarlindie.com'
+    app.mail.sender_name: Issue Tracker

@@ -8,7 +8,7 @@
   <meta http-equiv="Cache-Control" content="no-cache" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
-  <meta name="description" content="Issue tracking and project management for V75 software projects." />
+  <meta name="description" content="Issue tracking and project management for software projects." />
   <!-- FAVICON -->
   <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png" />
   <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png" />
@@ -28,7 +28,7 @@
   <meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png" />
   <meta name="theme-color" content="#000000" />
   <!-- / FAVICON -->
-  <title>V75 Issue Tracker</title>
+  <title>Issue Tracker</title>
   <link rel="stylesheet" href="bower_components/animate.css/animate.min.css" />
   <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
   <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css" />
@@ -154,7 +154,7 @@
         <md-button ng-if="vm.hasSidenav() && vm.showSidenavToggle()" ng-click="vm.toggleSidenav()" class="md-icon-button"><md-icon>menu</md-icon></md-button>
         <md-button ui-sref="app.home" class="no-margin">
           <md-icon class="spin-icon">donut_small</md-icon>
-          V75 <span hide-xs>Issue</span> Tracker
+          <span>Issue</span> Tracker
         </md-button>
         <span flex></span>
         <md-button ng-if="!$root.user" ui-sref="login">Login</md-button>
@@ -163,7 +163,7 @@
 
           <md-button class="no-margin button-link" ng-click="$mdOpenMenu($event)">
             <span>
-              <span class="text-lowercase" hide-xs>{{$root.user.email}}</span>&nbsp;
+              <span class="text-lowercase" hide-xs>{{$root.user.username || $root.user.email}}</span>&nbsp;
               <span class="text-uppercase" show-xs hide-gt-xs><strong>{{$root.user.initials}}</strong></span>
               <md-icon class="material-icons">person</md-icon>
             </span>

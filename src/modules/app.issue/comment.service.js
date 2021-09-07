@@ -8,24 +8,24 @@
 
         var service = {
           get: function (id) {
-            return $http.get(API_URI + '/comments/' + id);
+            return $http.get(API_URI + '/comments/' + id + '/');
           },
 
           all: function (options, ignoreLoadingBar) {
             options = options || {};
-            return $http.get(API_URI + '/comments?' + $.param(options), {ignoreLoadingBar: ignoreLoadingBar});
+            return $http.get(API_URI + '/comments/?' + $.param(options), {ignoreLoadingBar: ignoreLoadingBar});
           },
 
           create: function (comment) {
-            return $http.post(API_URI + '/comments', service.serialize(comment));
+            return $http.post(API_URI + '/comments/', service.serialize(comment));
           },
 
           update: function (comment) {
-            return $http.patch(API_URI + '/comments/' + comment.id, service.serialize(comment));
+            return $http.patch(API_URI + '/comments/' + comment.id + '/', service.serialize(comment));
           },
 
           delete: function (comment) {
-            return $http.delete(API_URI + '/comments/' + comment.id, {});
+            return $http.delete(API_URI + '/comments/' + comment.id + '/', {});
           },
 
           serialize: function(comment) {
@@ -37,8 +37,7 @@
             }
 
             if (comment.issue) {
-              comment.issue_id = comment.issue.id;
-              delete comment.issue;
+              comment.issue = comment.issue.id;
             }
 
             return comment;

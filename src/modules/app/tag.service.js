@@ -7,8 +7,11 @@
 
       var service = {
         all: function (options) {
-          return $http.get(API_URI + '/tags?' + $.param(options));
-        }
+          return $http.get(API_URI + '/tags/?' + $.param(options));
+        },
+        search: function (text) {
+          return $http.get(API_URI + '/tags/?search=' + encodeURIComponent(text));
+        },
       };
 
       return service;
