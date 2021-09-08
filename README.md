@@ -3,7 +3,10 @@
 
 ![](screenshots/1_project_home.png)
 
-Demo: https://issue-tracker.shemarlindie.com/
+### Demo
+https://issue-tracker.shemarlindie.com/
+
+User -- `demo` : `Gir@ff3s`
 
 See screenshots [here](screenshots).
 
