@@ -1,0 +1,123 @@
+<div ng-controller="IssueCtrl as vm">
+  <md-subheader class="inherit-line-height b-b md-no-sticky">
+    <h2>{{vm.editing ? 'Edit Issue: ' + vm.issue.name : 'Create Issue'}}</h2>
+  </md-subheader>
+
+  <div layout="column" layout-align="start center">
+    <md-card class="card-lg">
+      <form name="vm.issueForm" ng-submit="vm.issueForm.$valid && vm.editing ? vm.update() : vm.create()">
+        <md-card-content>
+          <div layout="column">
+            <md-autocomplete required class="m-b" md-autoselect="true" md-min-length="0"
+                             md-selected-item="vm.issue.project"
+                             md-search-text="vm.projectSearch.searchText"
+                             md-items="project in vm.projectSearch.search(vm.projectSearch.searchText)"
+                             md-item-text="project.name"
+                             md-autoselect="true"
+                             md-delay="300"
+                             md-input-minlength="0"
+                             md-match-case-insensitive="true"
+                             placeholder="Project *">
+              <span md-highlight-text="vm.projectSearch.searchText">
+                {{project.name}} {{ project.client ? ':: ' + project.client : '' }}
+              </span>
+            </md-autocomplete>
+
+            <md-input-container class="no-m">
+              <label>Title *</label>
+              <input type="text" ng-model="vm.issue.name" required/>
+            </md-input-container>
+
+            <md-input-container class="no-m">
+              <label>Description</label>
+              <textarea type="text" rows="10" ng-model="vm.issue.description" md-maxlength="10000" style="overflow-y: auto;"></textarea>
+            </md-input-container>
+
+            <md-content>
+              <md-datepicker ng-model="vm.issue.date_due" md-placeholder="Due Date"></md-datepicker>
+            </md-content>
+
+            <md-chips class="m-t" ng-model="vm.issue.testers"
+                      md-autocomplete-snap md-require-match="true">
+              <md-autocomplete md-autoselect="true" md-min-length="0"
+                               md-selected-item="vm.testerSearch.selectedItem"
+                               md-search-text="vm.testerSearch.searchText"
+                               md-items="user in vm.testerSearch.search(vm.testerSearch.searchText)"
+                               md-item-text="user.email"
+                               md-autoselect="true"
+                               md-no-cache="true"
+                               placeholder="Testers">
+                <small md-highlight-text="vm.testerSearch.searchText">{{user.full_name}} :: {{ user.email }}</small>
+              </md-autocomplete>
+              <md-chip-template>
+                <small>
+                  <strong>{{$chip.first_name}}</strong>
+                  <em>{{$chip.email}}</em>
+                </small>
+              </md-chip-template>
+            </md-chips>
+
+            <md-chips class="m-t" ng-model="vm.issue.fixers" md-autocomplete-snap md-require-match="true">
+              <md-autocomplete md-autoselect="true" md-min-length="0"
+                               md-selected-item="vm.fixerSearch.selectedItem"
+                               md-search-text="vm.fixerSearch.searchText"
+                               md-items="user in vm.fixerSearch.search(vm.fixerSearch.searchText)"
+                               md-no-cache="true"
+                               md-item-text="user.email" placeholder="Fixers">
+                <small md-highlight-text="vm.fixerSearch.searchText">{{user.full_name}} :: {{ user.email }}</small>
+              </md-autocomplete>
+              <md-chip-template>
+                <small>
+                  <strong>{{$chip.first_name}}</strong>
+                  <em>{{$chip.email}}</em>
+                </small>
+              </md-chip-template>
+            </md-chips>
+
+            <md-chips class="m-t" ng-model="vm.issue.tags" md-autocomplete-snap md-require-match="true">
+              <md-autocomplete md-autoselect="true" md-min-length="0"
+                               md-selected-item="vm.tagSearch.selectedItem"
+                               md-search-text="vm.tagSearch.searchText"
+                               md-items="tag in vm.tagSearch.search(vm.tagSearch.searchText)"
+                               md-item-text="tag"
+                               placeholder="Tags">
+                <span md-highlight-text="vm.tagSearch.searchText">{{tag.name}}</span>
+              </md-autocomplete>
+              <md-chip-template>
+                <span>
+                  <strong>{{$chip.name}}</strong>
+                </span>
+              </md-chip-template>
+            </md-chips>
+
+            <div class="m-t" layout="row" layout-wrap>
+              <md-input-container>
+                <label>Priority</label>
+                <md-select ng-model="vm.issue.priority_id" ng-required="true">
+                  <md-option ng-repeat="item in vm.priorityList" ng-value="item.id">{{item.name}}</md-option>
+                </md-select>
+              </md-input-container>
+              <md-input-container>
+                <label>Type</label>
+                <md-select ng-model="vm.issue.type_id" ng-required="true">
+                  <md-option ng-repeat="item in vm.typeList" ng-value="item.id">{{item.name}}</md-option>
+                </md-select>
+              </md-input-container>
+              <md-input-container>
+                <label>Status</label>
+                <md-select ng-model="vm.issue.status_id" ng-required="true">
+                  <md-option ng-repeat="item in vm.statusList" ng-value="item.id">{{item.name}}</md-option>
+                </md-select>
+              </md-input-container>
+            </div>
+          </div>
+        </md-card-content>
+        <md-card-footer layout="row" layout-align="end">
+          <md-button ng-disabled="issueForm.$pristine" type="submit" class="md-raised md-primary">{{vm.editing ?
+            'Update' : 'Create'}}
+          </md-button>
+        </md-card-footer>
+      </form>
+    </md-card>
+  </div>
+</div>

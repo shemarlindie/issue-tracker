@@ -1,0 +1,35 @@
+<div layout="column" layout-align="start center" layout-align-xs="start stretch">
+  <md-card>
+    <md-card-content>
+      <div class="m-t m-b-md">
+        <span class="text-uppercase text-sm text-muted"><b>Update Profile</b></span>
+        <md-divider></md-divider>
+      </div>
+      <form name="vm.profileEditForm" ng-submit="vm.profileEditForm.$valid && vm.saveProfile()" layout="column" class="p-t">
+        <div layout="row" layout-xs="column">
+          <md-input-container class="no-m" flex>
+            <label>First Name</label>
+            <input type="text" ng-model="vm.user.first_name" required />
+          </md-input-container>
+          <md-input-container class="no-m" flex>
+            <label>Last Name</label>
+            <input type="text" ng-model="vm.user.last_name" required />
+          </md-input-container>
+        </div>
+        <div layout="row" layout-align="start center" layout-xs="column">
+          <div class="text-sm" flex>
+            <span class="text-danger" ng-if="vm.profileError" ng-bind="vm.profileError"></span>
+            <span class="text-success" ng-if="vm.profileMsg" ng-bind="vm.profileMsg"></span>
+          </div>
+          <md-button ng-disabled="vm.updatingProfile || vm.profileEditForm.$pristine || vm.profileEditForm.$invalid" type="submit"
+          class="md-primary md-raised">
+            <div layout="row" layout-align="center center">
+              <md-progress-circular ng-show="vm.updatingProfile" md-mode="indeterminate" md-diameter="30"></md-progress-circular>
+              <span>Update</span>
+            </div>
+          </md-button>
+        </div>
+      </form>
+    </md-card-content>
+  </md-card>
+</div>

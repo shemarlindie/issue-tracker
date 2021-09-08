@@ -1,0 +1,73 @@
+<div ng-controller="ProjectCtrl as vm">
+  <md-subheader class="inherit-line-height b-b md-no-sticky">
+    <h2>{{vm.editing ? 'Edit Project: ' + vm.project.name : 'Create Project'}}</h2>
+  </md-subheader>
+
+  <div layout="column" layout-align="center center">
+    <md-card class="card-md">
+      <form name="vm.projectForm" ng-submit="vm.editing ? vm.update() : vm.create()">
+        <md-card-content>
+          <div layout="column">
+            <md-input-container class="no-m">
+              <label>Project Name *</label>
+              <input type="text" ng-model="vm.project.name" md-autofocus="true" autocomplete="off" required />
+            </md-input-container>
+
+            <md-input-container class="no-m">
+              <label>Client</label>
+              <input type="text" ng-model="vm.project.client" />
+            </md-input-container>
+
+            <md-input-container class="no-m">
+              <label>Description</label>
+              <textarea rows="4" ng-model="vm.project.description" md-maxlength="500"/>
+            </md-input-container>
+
+            <md-content>
+              <md-datepicker ng-model="vm.project.date_due" md-placeholder="Due Date"></md-datepicker>
+            </md-content>
+
+            <md-chips ng-model="vm.project.collaborators" md-autocomplete-snap md-require-match="true">
+              <md-autocomplete md-selected-item="vm.userSearch.selectedItem"
+                               md-search-text="vm.userSearch.searchText"
+                               md-items="user in vm.userSearch.search(vm.userSearch.searchText)"
+                               md-item-text="user.email" placeholder="add collaborator"
+                               md-delay="300"
+                               md-autoselect="true"
+                               md-min-length="0"
+                               md-match-case-insensitive="true"
+                               autocomplete="off">
+                <small md-highlight-text="vm.userSearch.searchText">{{user.full_name}} :: {{ user.email }}</small>
+              </md-autocomplete>
+              <md-chip-template>
+                <small>
+                  <strong>{{$chip.first_name}}</strong>
+                  <em>{{$chip.email}}</em>
+                </small>
+              </md-chip-template>
+            </md-chips>
+
+            <!--<md-chips ng-model="vm.project.tags" md-autocomplete-snap md-require-match="false"-->
+                      <!--md-transform-chip="vm.tagSearch.transformChip($chip)">-->
+              <!--<md-autocomplete md-selected-item="vm.tagSearch.selectedItem" md-search-text="vm.tagSearch.searchText"-->
+                               <!--md-items="tag in vm.tagSearch.tags | filter:vm.tagSearch.search"-->
+                               <!--md-item-text="tag" placeholder="add tag">-->
+                <!--<span md-highlight-text="vm.tagSearch.searchText">{{tag.name}}</span>-->
+              <!--</md-autocomplete>-->
+              <!--<md-chip-template>-->
+                <!--<span>-->
+                  <!--<strong>{{$chip.name}}</strong>-->
+                <!--</span>-->
+              <!--</md-chip-template>-->
+            <!--</md-chips>-->
+          </div>
+        </md-card-content>
+        <md-card-footer layout="row" layout-align="end">
+          <md-button ng-disabled="projectForm.$pristine" type="submit" class="md-raised md-primary">{{vm.editing ?
+            'Update' : 'Create'}}
+          </md-button>
+        </md-card-footer>
+      </form>
+    </md-card>
+  </div>
+</div>

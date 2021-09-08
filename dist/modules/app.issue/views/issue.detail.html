@@ -1,0 +1,139 @@
+<div ng-controller="IssueCtrl as vm">
+  <div ng-if="!vm.issue.id" layout="row" layout-align="center center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="50"></md-progress-circular>
+  </div>
+  <div class="animate-fade" ng-if="vm.issue.id">
+    <md-subheader class="inherit-line-height b-b md-no-sticky p-sm">
+      <div>
+        <b class="text-uppercase">
+          <span ng-bind="vm.issue.status.name"></span>
+          <span class="middot">&middot;</span>
+          <span ng-bind="vm.issue.type.name"></span>
+          <span class="middot">&middot;</span>
+          <span ng-bind="vm.issue.priority.name + ' Priority'"></span>
+        </b>
+      </div>
+
+      <div layout="row" layout-align="start center" layout-wrap>
+        <h2 class="no-margin">{{vm.issue.name}}</h2>
+        <md-button class="button-link" ui-sref="app.issue-edit({id:vm.issue.id})">Edit</md-button>
+        <md-button class="button-link" ng-click="vm.deleteIssue()">Delete</md-button>
+        <span flex></span>
+      </div>
+
+      <div>
+        Reported by <span ng-bind="vm.issue.reported_by.full_name"></span>
+        in <i><a ui-sref="app.project-detail({id:vm.issue.project.id})" ng-bind="vm.issue.project.name"></a></i>
+        on <span ng-bind="vm.issue.date_created | date:'MMM d, y h:mm a'"></span>
+        <br/>
+        <br/>
+        Updated <span am-time-ago="vm.issue.date_updated"></span>
+      </div>
+    </md-subheader>
+
+    <md-content class="b-t b-b m-v">
+      <div class="p-lg">
+        <div marked="vm.issue.description"></div>
+        <div class="p-v">
+          <div class="m-t" layout="row" layout-wrap>
+            <div class="m-r-lg">
+              <h5 class="text-uppercase text-muted no-margin">Fixers</h5>
+              <div layout="column">
+                <div class="p-v" ng-repeat="user in vm.issue.fixers">
+                  <h4 class="no-margin" ng-bind="user.full_name"></h4>
+                  <span class="text-sm text-muted"><i ng-bind="user.email"></i></span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h5 class="text-uppercase text-muted no-margin">Testers</h5>
+              <div layout="column">
+                <div class="p-v" ng-repeat="user in vm.issue.testers">
+                  <h4 class="no-margin" ng-bind="user.full_name"></h4>
+                  <span class="text-sm text-muted"><i ng-bind="user.email"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="m-t" ng-if="vm.issue.tags && vm.issue.tags.length">
+            <h5 class="text-uppercase text-muted no-margin">Tagged</h5>
+            <div class="p-v-xs"></div>
+            <md-chips readonly="true" class="no-shadow" ng-model="vm.issue.tags">
+              <md-chip-template>
+                <b ng-bind="$chip.name"></b>
+              </md-chip-template>
+            </md-chips>
+          </div>
+        </div>
+      </div>
+
+      <md-divider></md-divider>
+
+      <div class="p-lg">
+        <h3>Change Status</h3>
+        <form class="m-t-lg" ng-submit="vm.statusForm.$valid && vm.updateStatus()" name="vm.statusForm">
+          <div layout="column">
+            <md-input-container class="no-m" style="max-width: 200px;">
+              <label>Status</label>
+              <md-select ng-required="true" ng-model="vm.statusChangeData.status"
+                         ng-model-options="{trackBy: '$value.id'}">
+                <md-option ng-repeat="status in vm.statusList" ng-value="status">{{status.name}}</md-option>
+              </md-select>
+            </md-input-container>
+            <div layout="row" layout-align="start start" layout-xs="column" layout-align-xs="">
+              <md-input-container class="m-sm" flex-sm flex-gt-sm="50">
+                <label>Explain why you changed the status.</label>
+                <textarea cols="1" rows="5" ng-model="vm.statusChangeData.description"></textarea>
+              </md-input-container>
+              <md-button type="submit" class="md-raised md-primary">Update Status</md-button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <md-divider></md-divider>
+
+      <div ng-if="!vm.comments.results" layout="row" layout-align="center center">
+        <md-progress-circular md-mode="indeterminate" md-diameter="50"></md-progress-circular>
+        <div>Loading comments...</div>
+      </div>
+      <div ng-if="vm.comments.results" class="p-lg animate-fade">
+        <h3>Comments</h3>
+        <form class="" ng-submit="vm.commentForm.$valid && vm.addComment()" name="vm.commentForm">
+          <div layout="column">
+            <div layout="row" layout-align="start start" layout-xs="column" layout-align-xs="">
+              <md-input-container class="m-sm" flex-sm flex-gt-sm="50">
+                <label>Add a comment</label>
+                <textarea cols="1" rows="5" ng-model="vm.comment.description" required></textarea>
+              </md-input-container>
+              <md-button type="submit" class="md-raised md-primary">Comment</md-button>
+            </div>
+          </div>
+        </form>
+
+        <div class="m-t-lg animate-fade" ng-if="vm.comments && vm.comments.results.length">
+          <div class="p-v b-t animate-fade" ng-repeat="comment in vm.comments.results track by comment.id">
+            <h4 ng-if="comment.status" class="no-margin">{{comment.status.name}}</h4>
+            <div class="m-t-xs" ng-if="comment.description" ng-bind="comment.description"></div>
+            <div class="text-muted text-sm m-t-sm">
+              <span>{{ comment.commenter.full_name }}</span><span class="middot">&middot;</span><span
+                am-time-ago="comment.date_created"></span>
+              <span class="middot">&middot;</span>
+              <a href ng-click="vm.removeComment(comment)" class="text-sm">REMOVE</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <md-table-pagination class="b-b" md-limit="vm.query.limit" md-limit-options="[1, 5, 10, 15]"
+                           md-page="vm.query.page"
+                           md-total="{{vm.comments.count}}"
+                           md-on-paginate="vm.onPaginate"
+                           md-label="{rowsPerPage: 'Comments per page:'}"
+                           md-page-select>
+      </md-table-pagination>
+
+    </md-content>
+  </div>
+</div>

@@ -24,10 +24,10 @@ var browserSync = require('browser-sync').create();
 // SETTINGS
 var DIST_DIR = './dist';
 var COPY_FILES = [
-  './src/api/**/*', // symfony project
-  '!./src/api/var/cache/**/*',
-  '!./src/api/var/logs/**/*',
-  '!./src/api/var/sessions/**/*',
+  // './src/api/**/*', // symfony project
+  // '!./src/api/var/cache/**/*',
+  // '!./src/api/var/logs/**/*',
+  // '!./src/api/var/sessions/**/*',
 
   './src/bower_components/**/*',
   './src/css/**/*',

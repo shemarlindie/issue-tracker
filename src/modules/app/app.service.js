@@ -5,7 +5,7 @@
     .factory('AppConfig', function () {
       var service = {
         // API_URI: '/api/web',
-        API_URI: 'http://localhost:8000/api',
+        API_URI: 'https://django-api.shemarlindie.com/api',
         // API_URI: 'http://localhost:8000',
         UPDATE_INTERVAL: 10000
       };

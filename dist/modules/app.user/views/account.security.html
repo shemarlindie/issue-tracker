@@ -1,0 +1,96 @@
+<div layout="column" layout-align="start center" layout-align-xs="start stretch">
+  <md-card>
+    <md-card-content>
+      <div class="m-t m-b-md">
+        <span class="text-uppercase text-sm text-muted"><b>Change Email</b></span>
+        <md-divider></md-divider>
+      </div>
+      <form name="vm.changeEmailForm" ng-submit="vm.changeEmailForm.$valid && vm.changeEmail()" layout="column" class="p-t">
+        <div class="text-sm m-b-sm">
+          <span>Current Email: </span><b><span class="text-primary" ng-bind="vm.user.email || 'Loading...'"></span></b>
+        </div>
+        <div layout="row" layout-xs="column">
+          <md-input-container class="no-m" flex>
+            <label>New Email</label>
+            <input type="email" ng-model="vm.userEdit.newEmail" required />
+          </md-input-container>
+          <md-input-container class="no-m" flex>
+            <label>Password</label>
+            <input type="password" ng-model="vm.userEdit.password" minlength="6" required />
+          </md-input-container>
+        </div>
+        <div layout="row" layout-align="start center" layout-xs="column">
+          <div class="text-sm" flex>
+            <span class="text-danger" ng-if="vm.emailError" ng-bind="vm.emailError"></span>
+            <span class="text-success" ng-if="vm.emailMsg" ng-bind="vm.emailMsg"></span>
+          </div>
+          <md-button type="submit" ng-disabled="vm.changingEmail || vm.changeEmailForm.$pristine || vm.changeEmailForm.$invalid" class="md-primary md-raised">
+            <div layout="row" layout-align="center center">
+              <md-progress-circular ng-show="vm.changingEmail" md-mode="indeterminate" md-diameter="30"></md-progress-circular>
+              <span>Change Email</span>
+            </div>
+          </md-button>
+        </div>
+      </form>
+
+      <div class="m-v-md">
+        <span class="text-uppercase text-sm text-muted"><b>Change Password</b></span>
+        <md-divider></md-divider>
+      </div>
+      <form name="vm.changePasswordForm" ng-submit="vm.changePasswordForm.$valid && vm.changePassword()" layout="column" class="p-t">
+        <md-input-container class="no-m" flex>
+          <label>Old Password</label>
+          <input type="password" ng-model="vm.passwordChange.oldPassword" minlength="6" required />
+        </md-input-container>
+        <div layout="row" layout-xs="column">
+          <md-input-container class="no-m" flex>
+            <label>New Password</label>
+            <input type="password" ng-model="vm.passwordChange.newPassword" minlength="6" required />
+          </md-input-container>
+          <md-input-container class="no-m" flex>
+            <label>Confirm New Password</label>
+            <input type="password" compare-to="vm.passwordChange.newPassword" ng-model="vm.passwordChange.confirmation" minlength="6" required />
+          </md-input-container>
+        </div>
+        <div layout="row" layout-align="start center" layout-xs="column">
+          <div class="text-danger text-sm" flex>
+            <span class="text-danger" ng-if="vm.passwordChangeError" ng-bind="vm.passwordChangeError"></span>
+            <span class="text-success" ng-if="vm.passwordChangeMsg" ng-bind="vm.passwordChangeMsg"></span>
+          </div>
+          <md-button type="submit" ng-disabled="vm.changingPassword || vm.changePasswordForm.$pristine || vm.changePasswordForm.$invalid"
+          class="md-primary md-raised">
+            <div layout="row" layout-align="center center">
+              <md-progress-circular ng-show="vm.changingPassword" md-mode="indeterminate" md-diameter="30"></md-progress-circular>
+              <span>Change Password</span>
+            </div>
+          </md-button>
+        </div>
+      </form>
+
+      <div class="m-v-md">
+        <span class="text-uppercase text-sm text-muted"><b>Delete Account</b></span>
+        <md-divider></md-divider>
+      </div>
+      <form name="vm.removeAccountForm" ng-submit="vm.removeAccountForm.$valid && vm.removeAccount()" layout="column" class="p-t">
+        <div layout="row" layout-align="start start" layout-xs="column" layout-align-xs="">
+          <md-input-container class="no-m" flex>
+            <label>Password</label>
+            <input type="password" ng-model="vm.userDelete.password" minlength="6" required />
+          </md-input-container>
+          <div layout="row" layout-align="center">
+            <md-button type="submit" ng-disabled="vm.removingAccount || vm.removeAccountForm.$pristine || vm.removeAccountForm.$invalid"
+            class="md-warn md-hue-2 md-raised">
+              <div layout="row" layout-align="center center">
+                <md-progress-circular ng-show="vm.removingAccount" md-mode="indeterminate" md-diameter="30"></md-progress-circular>
+                <span>Delete Account</span>
+              </div>
+            </md-button>
+          </div>
+        </div>
+        <div class="text-sm" flex>
+          <span class="text-danger" ng-bind="vm.removeAccountError"></span>
+        </div>
+      </form>
+    </md-card-content>
+  </md-card>
+</div>

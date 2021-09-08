@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+  <!--<base href="/">-->
+  <meta charset="UTF-8" />
+  <!-- prevent caching of index across browsers -->
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+  <meta name="description" content="Issue tracking and project management for software projects." />
+  <!-- FAVICON -->
+  <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png" />
+  <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png" />
+  <link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png" />
+  <link rel="manifest" href="favicon/manifest.json" />
+  <meta name="msapplication-TileColor" content="#000000" />
+  <meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png" />
+  <meta name="theme-color" content="#000000" />
+  <!-- / FAVICON -->
+  <title>Issue Tracker</title>
+  <link rel="stylesheet" href="bower_components/animate.css/animate.min.css" />
+  <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css" />
+  <link rel="stylesheet" href="bower_components/angular-material-data-table/dist/md-data-table.min.css" />
+  <link rel="stylesheet" href="bower_components/highlight.js/src/styles/xcode.css" />
+  <link rel="stylesheet" href="css/material-icons.css" />
+  <link rel="stylesheet" href="modules/external/md-sidenav-menu/md-sidenav-menu.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body ng-controller="AppCtrl as vm" layout="column">
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <style>
+      #preloader {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        background-color: #fff;
+      }
+      
+      .text-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+      
+      .loader-text {
+        position: relative;
+        top: 50%;
+        margin-top: -40px;
+        line-height: 40px;
+        color: #777;
+        padding: 0 1em;
+        text-align: center;
+      }
+    </style>
+    <div class="text-wrapper">
+      <div class="loader-text">
+        Let's change the world with software! ;)
+        <br />Loading...
+      </div>
+    </div>
+  </div>
+  <!-- / PRELOADER -->
+  <!-- APP SCRIPTS -->
+  <!-- **DEBUG -->
+  <!--<script src="bower_components/jquery/dist/jquery.js"></script>-->
+  <!--<script src="bower_components/angular/angular.js"></script>-->
+  <!--<script src="bower_components/angular-animate/angular-animate.js"></script>-->
+  <!--<script src="bower_components/angular-aria/angular-aria.js"></script>-->
+  <!--<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>-->
+  <!--<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>-->
+  <!--<script src="bower_components/angular-material/angular-material.js"></script>-->
+  <!--<script src="bower_components/moment/moment.js"></script>-->
+  <!--<script src="bower_components/angular-moment/angular-moment.js"></script>-->
+  <!--<script src="bower_components/marked/lib/marked.js"></script>-->
+  <!--<script src="bower_components/angular-marked/dist/angular-marked.js"></script>-->
+  <!--<script src="bower_components/angular-loading-bar/build/loading-bar.min.js"></script>  -->
+  <!--<script src="bower_components/a0-angular-storage/dist/angular-storage.min.js"></script>-->
+  <!--<script src="bower_components/angular-cache-buster/angular-cache-buster.js"></script>-->
+  <!--<script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>-->
+  <!--<script src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>-->
+  <!--<script src="bower_components/imagesloaded/imagesloaded.pkgd.min.js"></script>-->
+  <!--<script src="bower_components/masonry/dist/masonry.pkgd.min.js"></script>-->
+  <!--<script src="bower_components/angular-masonry/angular-masonry.js"></script>-->
+  <!--<script src="bower_components/highlight.js/src/highlight.js"></script>-->
+  <!-- / **DEBUG-->
+  <!-- **DISTRIBUTION -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+  <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script src="bower_components/angular-material/angular-material.min.js"></script>
+  <script src="bower_components/moment/min/moment.min.js"></script>
+  <script src="bower_components/angular-moment/angular-moment.min.js"></script>
+  <script src="bower_components/marked/lib/marked.js"></script>
+  <script src="bower_components/angular-marked/dist/angular-marked.min.js"></script>
+  <script src="bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
+  <script src="bower_components/a0-angular-storage/dist/angular-storage.min.js"></script>
+  <script src="bower_components/angular-cache-buster/angular-cache-buster.js"></script>
+  <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+  <script src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
+  <script src="bower_components/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="bower_components/masonry/dist/masonry.pkgd.min.js"></script>
+  <script src="bower_components/angular-masonry/angular-masonry.js"></script>
+  <script src="bower_components/highlight.js/src/highlight.js"></script>
+  <script src="modules/external/highlight.pack.js"></script>
+
+  <!-- / ** DISTRIBUTION -->
+  <script src="modules/external/md-sidenav-menu/md-sidenav-menu.js"></script>
+  <script src="modules/app.user/user.module.js"></script>
+  <script src="modules/app.user/user.service.js"></script>
+  <script src="modules/app.user/user.ctrl.js"></script>
+  <script src="modules/app.issue/issue.module.js"></script>
+  <script src="modules/app.issue/filters.js"></script>
+  <script src="modules/app.issue/issue.service.js"></script>
+  <script src="modules/app.issue/comment.service.js"></script>
+  <script src="modules/app.issue/issue.ctrl.js"></script>
+  <script src="modules/app.issue/issue.feed.ctrl.js"></script>
+  <script src="modules/app.project/project.module.js"></script>
+  <script src="modules/app.project/project.service.js"></script>
+  <script src="modules/app.project/project.ctrl.js"></script>
+  <script src="modules/app.project/project.list.ctrl.js"></script>
+  <script src="modules/app/app.module.js"></script>
+  <script src="modules/app/app.service.js"></script>
+  <script src="modules/app/tag.service.js"></script>
+  <script src="modules/app/app.ctrl.js"></script>
+  <script src="modules/app/app.filters.js"></script>
+  <script src="modules/app/app.directives.js"></script>
+  <script src="modules/app/app.config.theme.js"></script>
+  <script src="modules/app/app.config.router.js"></script>
+  <!-- / APP SCRIPTS -->
+
+  <md-content class="md-hue-1" layout="column" flex>
+    <md-toolbar id="app-toolbar" class="md-hue-2 md-whiteframe-1dp animated fadeInDown">
+      <div class="md-toolbar-tools" layout="row">
+        <md-button ng-if="vm.hasSidenav() && vm.showSidenavToggle()" ng-click="vm.toggleSidenav()" class="md-icon-button"><md-icon>menu</md-icon></md-button>
+        <md-button ui-sref="app.home" class="no-margin">
+          <md-icon class="spin-icon">donut_small</md-icon>
+          <span>Issue</span> Tracker
+        </md-button>
+        <span flex></span>
+        <md-button ng-if="!$root.user" ui-sref="login">Login</md-button>
+
+        <md-menu ng-if="$root.user" md-offset="0 45" md-position-mode="target-right target" title="{{$root.user.email}}">
+
+          <md-button class="no-margin button-link" ng-click="$mdOpenMenu($event)">
+            <span>
+              <span class="text-lowercase" hide-xs>{{$root.user.username || $root.user.email}}</span>&nbsp;
+              <span class="text-uppercase" show-xs hide-gt-xs><strong>{{$root.user.initials}}</strong></span>
+              <md-icon class="material-icons">person</md-icon>
+            </span>
+          </md-button>
+
+          <md-menu-content width="4">
+            <span class="text-center m-t-xs" hide-gt-xs>
+              <span class="text-sm text-ellipsis">{{$root.user.email}}</span>&nbsp;
+              <md-divider class="m-t-sm"></md-divider>
+            </span>
+            <md-menu-item>
+              <md-button ng-disabled="true" ui-sref="account">
+                <md-icon class="md-primary">person</md-icon>
+                <span>Account</span>
+              </md-button>
+            </md-menu-item>
+            <md-button class="md-raised md-warn md-hue-2" ng-click="vm.logout()" ng-disabled="loggingOut">Logout</md-button>
+          </md-menu-content>
+
+        </md-menu>
+      </div>
+    </md-toolbar>
+
+    <md-content class="animate-fade md-hue-1" layout="column" ui-view flex></md-content>
+  </md-content>
+</body>
+
+</html>
