@@ -3,7 +3,7 @@
 
   angular.module('app')
     .factory('TagService', ['AppConfig', '$http', function (AppConfig, $http) {
-      var API_URI = AppConfig.API_URI;
+      var API_URI = AppConfig.API_URI + '/issue';
 
       var service = {
         all: function (options) {

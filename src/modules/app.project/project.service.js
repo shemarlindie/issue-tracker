@@ -4,7 +4,7 @@
   angular.module('app.project')
     .factory('ProjectService', ['AppConfig', '$http',
       function (AppConfig, $http) {
-        var API_URI = AppConfig.API_URI;
+        var API_URI = AppConfig.API_URI + '/issue';
 
         var service = {
           get: function (id) {
