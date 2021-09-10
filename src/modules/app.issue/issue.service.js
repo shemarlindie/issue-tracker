@@ -4,7 +4,7 @@
   angular.module('app.issue')
     .factory('IssueService', ['AppConfig', '$http', '$q',
       function (AppConfig, $http, $q) {
-        var API_URI = AppConfig.API_URI;
+        var API_URI = AppConfig.API_URI + '/issue';
 
         var service = {
           CACHE: {
