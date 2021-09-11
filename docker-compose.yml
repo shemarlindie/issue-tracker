@@ -4,6 +4,6 @@ services:
   web:
     container_name: issue_tracker
     build: .
-    restart: unless-stopped
+    restart: always
 #    ports:
 #      - "8080:80"
